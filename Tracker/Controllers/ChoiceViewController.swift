@@ -8,15 +8,21 @@
 import Foundation
 import UIKit
 
+protocol MainScreenDelegate: AnyObject {
+    func didCreateNewTracker(title: String, tracker: Tracker)
+}
+
 final class ChoiceVC: UIViewController {
+    
     let habitButton = UIButton()
     let irregularEventButton = UIButton()
     let label = UILabel()
+    weak var delegate: MainScreenDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "whiteColor")
-        self.title = "Создание трекера"
+        createNavigation()
         createHabitButton()
         creatIrregularEventButton()
     }
@@ -31,10 +37,9 @@ final class ChoiceVC: UIViewController {
         habitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 395).isActive = true
         habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        habitButton.widthAnchor.constraint(equalToConstant: 335).isActive = true
         habitButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         habitButton.layer.cornerRadius = 16
-        habitButton.addTarget(self, action: #selector(habbitButtonTapped), for: .touchUpInside)
+        habitButton.addTarget(self, action: #selector(habitButtonTapped), for: .touchUpInside)
     }
     
     func creatIrregularEventButton() {
@@ -47,13 +52,19 @@ final class ChoiceVC: UIViewController {
         irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16).isActive = true
         irregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         irregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        irregularEventButton.widthAnchor.constraint(equalToConstant: 335).isActive = true
         irregularEventButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         irregularEventButton.layer.cornerRadius = 16
         irregularEventButton.addTarget(self, action: #selector(irregularEventButtonTapped), for: .touchUpInside)
     }
     
-    @objc func habbitButtonTapped() {
+    func createNavigation() {
+        navigationItem.title = "Создание трекера"
+        navigationController?.isNavigationBarHidden = false
+        navigationItem.hidesBackButton = true
+    }
+    
+    //MARK: Objc metods
+    @objc func habitButtonTapped() {
         swithToHabitCreationScreen()
     }
     
@@ -61,12 +72,20 @@ final class ChoiceVC: UIViewController {
         
     }
     
+    //MARK: Metods
     func swithToHabitCreationScreen() {
         let habitCreationVC = HabitCreationScreenVC()
-        let navigationVC = UINavigationController(rootViewController: habitCreationVC)
-        navigationVC.modalPresentationStyle = .pageSheet
-        present(navigationVC, animated: true)
+        habitCreationVC.delegate = delegate
+        navigationController?.pushViewController(habitCreationVC, animated: true)
     }
+    
+    func switchToMainScreen() {
+        if let navigationController = self.navigationController {
+                   navigationController.popToRootViewController(animated: true)
+               } else {
+                   self.dismiss(animated: true)
+               }
+           }
 }
 
 

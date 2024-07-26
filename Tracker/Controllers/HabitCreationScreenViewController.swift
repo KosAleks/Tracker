@@ -8,12 +8,15 @@
 import Foundation
 import UIKit
 
-final class HabitCreationScreenVC: UIViewController, UITableViewDelegate {
+final class HabitCreationScreenVC: UIViewController {
     let labelNewHabit = UILabel()
     let enterTrackerName = UITextField()
     let tableView = UITableView()
     let cancelButton = UIButton()
     let createButton = UIButton()
+    var trackerName = String()
+    let constants = Constants()
+    weak var delegate: MainScreenDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,25 +24,26 @@ final class HabitCreationScreenVC: UIViewController, UITableViewDelegate {
         createEnterTrackerName()
         createCreateButton()
         createCancelButton()
-        self.title = "Новая привычка"
+        createNavigation()
         tableView.delegate = self
         tableView.dataSource = self
         createTableView()
     }
     
+    //MARK: Methods for creating UI
+    
     func createEnterTrackerName() {
         enterTrackerName.backgroundColor = UIColor(named: "greyColor")
-        enterTrackerName.text = "Введите название трекера"
-        enterTrackerName.textColor = UIColor(named: "darkGrey")
-        enterTrackerName.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        enterTrackerName.placeholder = "Введите название трекера"
+        enterTrackerName.characterLimit = 38
         enterTrackerName.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(enterTrackerName)
         enterTrackerName.topAnchor.constraint(equalTo: view.topAnchor, constant: 138).isActive = true
         enterTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         enterTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        enterTrackerName.widthAnchor.constraint(equalToConstant: 343).isActive = true
         enterTrackerName.heightAnchor.constraint(equalToConstant: 75).isActive = true
         enterTrackerName.layer.cornerRadius = 16
+        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
     }
     
     func createCreateButton() {
@@ -48,12 +52,14 @@ final class HabitCreationScreenVC: UIViewController, UITableViewDelegate {
         createButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
         createButton.backgroundColor = UIColor(named: "darkGrey")
         createButton.layer.cornerRadius = 16
+        createButton.isEnabled = false
         createButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(createButton)
         createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         createButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34).isActive = true
         createButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
         createButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
     }
     
     func createCancelButton() {
@@ -69,28 +75,37 @@ final class HabitCreationScreenVC: UIViewController, UITableViewDelegate {
         cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34).isActive = true
         cancelButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
         cancelButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
+        cancelButton.addTarget(self, action: #selector(switchToMainScreen), for: .touchUpInside)
     }
     
     func createTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
+        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         tableView.topAnchor.constraint(equalTo: enterTrackerName.bottomAnchor, constant: 24).isActive = true
-        tableView.widthAnchor.constraint(equalToConstant: 343).isActive = true
         tableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+    }
+    
+    func createNavigation() {
+        navigationItem.title = "Новая привычка"
+        navigationController?.isNavigationBarHidden = false
+        navigationItem.hidesBackButton = true
     }
     
     func switchToScheduleCreator() {
         let scheduleCreator = ScheduleCreatorVC()
-        let navVC = UINavigationController(rootViewController: scheduleCreator)
-        navVC.modalPresentationStyle = .pageSheet
-        present(navVC, animated: true)
+        scheduleCreator.onDoneButtonPressed = {
+            [weak self] in self?.createButtonChanged()
+        }
+        navigationController?.pushViewController(scheduleCreator, animated: true)
     }
 }
 
-extension HabitCreationScreenVC: UITableViewDataSource {
+//MARK: Extensions
+
+extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         2
     }
@@ -124,5 +139,37 @@ extension HabitCreationScreenVC: UITableViewDataSource {
             switchToScheduleCreator()
         }
     }
-}
     
+    //MARK: @objc metods
+    
+    @objc func switchToMainScreen() {
+        dismiss(animated: true)
+    }
+    
+    @objc func createButtonTapped() {
+        delegate?.didCreateNewTracker(title: trackerName, tracker: Tracker(
+            id: UUID(),
+            name: trackerName,
+            color: constants.color,
+            emoji: constants.emojiArray.randomElement() ?? "🐶",
+            schedule: [true, false, true, false, true, false, true]
+        ))
+        dismiss(animated: true)
+    }
+    
+    @objc func textChanged() {
+        trackerName = enterTrackerName.text ?? ""
+        if trackerName.isEmpty {
+            createButton.isEnabled = false
+        } else {
+            createButtonChanged()
+        }
+    }
+    
+    //MARK: Metods
+    
+    func createButtonChanged() {
+        self.createButton.backgroundColor = UIColor(named: "blackColor")
+        self.createButton.isEnabled = true
+    }
+}

@@ -12,17 +12,20 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
     let doneButton = UIButton()
     let tableViewShedule = UITableView()
     let daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    let habitVC = HabitCreationScreenVC()
+    var onDoneButtonPressed: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Расписание"
+        createNavigation()
         view.backgroundColor = UIColor(named: "whiteColor")
         createDoneButton()
         tableViewShedule.dataSource = self
         tableViewShedule.delegate = self
         createTableViewShedule()
-        
     }
+    
+    //MARK: Methods for creating
     
     func createDoneButton() {
         doneButton.backgroundColor = UIColor(named: "blackColor")
@@ -34,8 +37,8 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
         doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50).isActive = true
-        doneButton.widthAnchor.constraint(equalToConstant: 335).isActive = true
         doneButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        doneButton.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
     }
     
     func createTableViewShedule() {
@@ -44,11 +47,18 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
         view.addSubview(tableViewShedule)
         tableViewShedule.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         tableViewShedule.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        tableViewShedule.widthAnchor.constraint(equalToConstant: 343).isActive = true
         tableViewShedule.heightAnchor.constraint(equalToConstant: 525).isActive = true
         tableViewShedule.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -47).isActive = true
     }
+    
+    func createNavigation() {
+        navigationItem.title = "Расписание"
+        navigationController?.isNavigationBarHidden = false
+        navigationItem.hidesBackButton = true
+    }
 }
+
+//MARK: Extensions
 
 extension ScheduleCreatorVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -57,7 +67,7 @@ extension ScheduleCreatorVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cellShedule", for: indexPath) as! CustomCell
-            cell.textLabel?.text = daysOfWeek[indexPath.row]
+        cell.textLabel?.text = daysOfWeek[indexPath.row]
         if indexPath.row == 0 {
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
         }
@@ -65,18 +75,26 @@ extension ScheduleCreatorVC: UITableViewDataSource {
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
         }
         let switchControll = UISwitch()
-        switchControll.addTarget(self, action: #selector(print1(_:)), for: .valueChanged)
+        switchControll.addTarget(self, action: #selector(addDayInTracker(_:)), for: .valueChanged)
         cell.accessoryView = switchControll
         cell.backgroundColor = UIColor(named: "greyColor")
         return cell
     }
     
-    @objc func print1(_ selector: UISwitch) {
-        
-    }
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 525/7
     }
+    
+    //MARK: @objc metods
+    
+    @objc func addDayInTracker(_ selector: UISwitch) {
+        // TODO: реализовать механизм запоминания дней для трекера и добавить их отображение на ячейку
+        
+    }
+    
+    @objc func doneButtonPressed() {
+            onDoneButtonPressed?()
+        navigationController?.popViewController(animated: true)
+        }
 }
 
