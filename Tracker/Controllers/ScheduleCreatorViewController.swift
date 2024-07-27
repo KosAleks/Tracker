@@ -76,6 +76,7 @@ extension ScheduleCreatorVC: UITableViewDataSource {
         }
         let switchControll = UISwitch()
         switchControll.addTarget(self, action: #selector(addDayInTracker(_:)), for: .valueChanged)
+        switchControll.onTintColor = .blue
         cell.accessoryView = switchControll
         cell.backgroundColor = UIColor(named: "greyColor")
         return cell

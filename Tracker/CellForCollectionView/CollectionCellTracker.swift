@@ -160,14 +160,14 @@ final class CollectionCellTracker: UICollectionViewCell {
         case UIImage(systemName: "plus"):
             quantityButton.backgroundColor = UIColor(named: "5")
         case UIImage(systemName: "checkmark"):
-            quantityButton.backgroundColor =  UIColor(named: "5")
+            quantityButton.backgroundColor =  UIColor(named: "5")?.withAlphaComponent(0.3)
         case .none:
             break
         case .some(_):
             break
         }
-        let plusImage = UIImage(systemName: "plus")
-        let checkImage = UIImage(systemName: "checkmark")
+        let plusImage = UIImage(systemName: "checkmark")
+        let checkImage = UIImage(systemName: "plus")
     }
     
     private func setQuantityLabelText(_ count: Int) -> String {
