@@ -117,7 +117,7 @@ final class HabitCreationScreenVC: UIViewController {
     
     @objc func createButtonTapped() {
         guard let newTrackerName = enterTrackerName.text else { return }
-        guard let date = delegateNewTracker?.setDateForNewTracker() else { return }
+        guard let date = self.delegateNewTracker?.setDateForNewTracker() else { return }
         
         var newTrackerSchedule: [String] = []
         
@@ -135,8 +135,8 @@ final class HabitCreationScreenVC: UIViewController {
             schedule: newTrackerSchedule
         )
         
-        delegateNewTracker?.didCreateNewTracker(newTracker)
-        dismiss(animated: true)
+        self.delegate?.didCreateNewTracker(title: newTrackerName, tracker: newTracker)
+        switchToMainScreen()
     }
     
     @objc func textChanged() {
@@ -188,9 +188,9 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
                 let selectedDaysString = selectedDaysArray.map { $0.stringValue }.joined(separator: ", ")
                 cell.setDescription(selectedDaysString)
             }
-            cell.accessoryType = .disclosureIndicator
-            cell.backgroundColor = UIColor(named: "greyColor")
         }
+        cell.backgroundColor = UIColor(named: "greyColor")
+        cell.accessoryType = .disclosureIndicator
         return cell
     }
     

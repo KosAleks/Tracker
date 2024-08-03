@@ -290,6 +290,18 @@ extension MainScreen: TrackerCollectionCellDelegate {
     }
 }
 
+extension MainScreen: NewTrackerViewControllerDelegate {
+    
+    func setDateForNewTracker() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy"
+        return dateFormatter.string(from: currentDate)
+    }
+    
+    func didCreateNewTracker(_ tracker: Tracker) {
+        addTracker(tracker, to: 0)
+    }
+}
 
 
 
