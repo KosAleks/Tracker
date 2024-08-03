@@ -1,12 +1,10 @@
-//
-//  TrackerCreationScreen.swift
-//  Tracker
-//
-//  Created by Александра Коснырева on 11.07.2024.
-//
-
 import Foundation
 import UIKit
+
+protocol NewTrackerViewControllerDelegate: AnyObject {
+    func setDateForNewTracker() -> String
+    func didCreateNewTracker(_ tracker: Tracker)
+}
 
 final class HabitCreationScreenVC: UIViewController {
     let labelNewHabit = UILabel()
@@ -16,7 +14,9 @@ final class HabitCreationScreenVC: UIViewController {
     let createButton = UIButton()
     var trackerName = String()
     let constants = Constants()
+    var selectedDays: [WeekDay: Bool] = [:]
     
+    weak var delegateNewTracker: NewTrackerViewControllerDelegate?
     weak var delegate: MainScreenDelegate?
     
     override func viewDidLoad() {
@@ -36,15 +36,15 @@ final class HabitCreationScreenVC: UIViewController {
     func createEnterTrackerName() {
         enterTrackerName.backgroundColor = UIColor(named: "greyColor")
         enterTrackerName.placeholder = "Введите название трекера"
-        enterTrackerName.characterLimit = 38
         enterTrackerName.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(enterTrackerName)
         NSLayoutConstraint.activate([
-               enterTrackerName.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-               enterTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-               enterTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-               enterTrackerName.heightAnchor.constraint(equalToConstant: 75)
-           ])
+            enterTrackerName.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+            enterTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            enterTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            enterTrackerName.heightAnchor.constraint(equalToConstant: 75)
+        ])
+        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
     }
     
     func createCreateButton() {
@@ -56,10 +56,12 @@ final class HabitCreationScreenVC: UIViewController {
         createButton.isEnabled = false
         createButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(createButton)
-        createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        createButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34).isActive = true
-        createButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
-        createButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        NSLayoutConstraint.activate([
+            createButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            createButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
+            createButton.widthAnchor.constraint(equalToConstant: 166),
+            createButton.heightAnchor.constraint(equalToConstant: 60)
+        ])
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
     }
     
@@ -72,10 +74,12 @@ final class HabitCreationScreenVC: UIViewController {
         cancelButton.layer.borderWidth = 1
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(cancelButton)
-        cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34).isActive = true
-        cancelButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
-        cancelButton.widthAnchor.constraint(equalToConstant: 166).isActive = true
+        NSLayoutConstraint.activate([
+            cancelButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            cancelButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
+            cancelButton.heightAnchor.constraint(equalToConstant: 60),
+            cancelButton.widthAnchor.constraint(equalToConstant: 166)
+        ])
         cancelButton.addTarget(self, action: #selector(switchToMainScreen), for: .touchUpInside)
     }
     
@@ -83,10 +87,12 @@ final class HabitCreationScreenVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
         view.addSubview(tableView)
-        tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
-        tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
-        tableView.topAnchor.constraint(equalTo: enterTrackerName.bottomAnchor, constant: 24).isActive = true
-        tableView.heightAnchor.constraint(equalToConstant: 150).isActive = true
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            tableView.topAnchor.constraint(equalTo: enterTrackerName.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: 150)
+        ])
     }
     
     func createNavigation() {
@@ -103,47 +109,6 @@ final class HabitCreationScreenVC: UIViewController {
         navigationController?.pushViewController(scheduleCreator, animated: true)
     }
     
-}
-
-//MARK: Extensions
-
-extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        2
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150/2
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
-        if indexPath.row == 0 {
-            cell.textLabel?.text = "Категория"
-            cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
-        }
-        else if indexPath.row == 1 {
-            cell.textLabel?.text = "Расписание"
-            cell.roundCorners(corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 16)
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-               cell.layoutMargins = UIEdgeInsets.zero
-        }
-        cell.accessoryType = .disclosureIndicator
-        cell.backgroundColor =  UIColor(named: "greyColor")
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 0 {
-            print("")
-            
-        }
-        else if indexPath.row == 1 {
-            switchToScheduleCreator()
-        }
-    }
-    
     //MARK: @objc methods
     
     @objc func switchToMainScreen() {
@@ -151,13 +116,26 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     @objc func createButtonTapped() {
-        self.delegate?.didCreateNewTracker(title: trackerName, tracker: Tracker(
+        guard let newTrackerName = enterTrackerName.text else { return }
+        guard let date = delegateNewTracker?.setDateForNewTracker() else { return }
+        
+        var newTrackerSchedule: [String] = []
+        
+        if selectedDays.values.contains(true) {
+            newTrackerSchedule = selectedDays.filter { $0.value }.map { $0.key.stringValue }
+        } else {
+            newTrackerSchedule = [date]
+        }
+        
+        let newTracker = Tracker(
             id: UUID(),
-            name: trackerName,
+            name: newTrackerName,
             color: constants.color,
             emoji: constants.emojiArray.randomElement() ?? "🐶",
-            schedule: [true, false, true, false, true, false, true]
-        ))
+            schedule: newTrackerSchedule
+        )
+        
+        delegateNewTracker?.didCreateNewTracker(newTracker)
         dismiss(animated: true)
     }
     
@@ -173,7 +151,53 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
     //MARK: methods
     
     func createButtonChanged() {
-        self.createButton.backgroundColor = UIColor(named: "blackColor")
-        self.createButton.isEnabled = true
+        createButton.backgroundColor = UIColor(named: "blackColor")
+        createButton.isEnabled = true
+    }
+}
+
+//MARK: Extensions
+
+extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150 / 2
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
+        if indexPath.row == 0 {
+            cell.textLabel?.text = "Категория"
+            cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
+            
+        } else if indexPath.row == 1 {
+            cell.textLabel?.text = "Расписание"
+            cell.roundCorners(corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 16)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.layoutMargins = UIEdgeInsets.zero
+            
+            let selectedDaysArray = selectedDays.filter { $0.value }.map { $0.key }
+            if selectedDaysArray.isEmpty {
+                cell.setDescription("")
+            } else if selectedDaysArray.count == WeekDay.allCases.count {
+                cell.setDescription("Каждый день")
+            } else {
+                let selectedDaysString = selectedDaysArray.map { $0.stringValue }.joined(separator: ", ")
+                cell.setDescription(selectedDaysString)
+            }
+            cell.accessoryType = .disclosureIndicator
+            cell.backgroundColor = UIColor(named: "greyColor")
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.row == 1 {
+            switchToScheduleCreator()
+        }
     }
 }

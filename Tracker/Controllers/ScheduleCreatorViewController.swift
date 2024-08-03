@@ -8,14 +8,20 @@
 import Foundation
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func didSelectDays(_ days: [WeekDay: Bool])
+}
+
+
 final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
-    let scheduleCellTracker = ScheduleCellTracker()
+    weak var delegate: ScheduleViewControllerDelegate?
     let doneButton = UIButton()
     let tableViewShedule = UITableView()
     var selectedDays: [WeekDay: Bool] = [:]
     var daysOfWeek = [
         "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
     ]
+    let switchControll = UISwitch()
     let habitVC = HabitCreationScreenVC()
     var onDoneButtonPressed: (() -> Void)?
     
@@ -73,19 +79,19 @@ extension ScheduleCreatorVC: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier, for: indexPath) as! ScheduleCellTracker
-        cell.textLabel?.text = daysOfWeek[indexPath.row]
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier, for: indexPath) as? ScheduleCellTracker else { return UITableViewCell() }
+            
         if indexPath.row == 0 {
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
-        }
-        else if indexPath.row == 6 {
+        } else if indexPath.row == 6 {
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
         }
-        cell.accessoryView = scheduleCellTracker.switchControll
-        cell.backgroundColor = UIColor(named: "greyColor")
+        cell.switchControll.addTarget(self, action: #selector(addDay(sender:)), for: .valueChanged)
         cell.configure(
             title: daysOfWeek[indexPath.row],
             isSwithcOn: selectedDays[WeekDay.allCases[indexPath.row]] ?? false)
+        cell.selectionStyle = .none
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return cell
     }
     
@@ -96,7 +102,8 @@ extension ScheduleCreatorVC: UITableViewDataSource {
     //MARK: @objc methods
     
     @objc func addDay(sender: UISwitch) {
-        guard let cell = tableViewShedule.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier) as? ScheduleCellTracker,
+        
+        guard let cell = sender.superview?.superview as? ScheduleCellTracker,
               let indexPath = tableViewShedule.indexPath(for: cell) else { return }
         
         let day = WeekDay.allCases[indexPath.row]
@@ -104,9 +111,10 @@ extension ScheduleCreatorVC: UITableViewDataSource {
     }
     
     @objc func doneButtonPressed() {
+        delegate?.didSelectDays(selectedDays)
         onDoneButtonPressed?()
         navigationController?.popViewController(animated: true)
-        }
+    }
     
     //MARK: methods
     

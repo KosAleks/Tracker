@@ -22,16 +22,23 @@ final class ScheduleCellTracker: UITableViewCell {
         let switchControll = UISwitch()
         switchControll.onTintColor = .blue
         switchControll.setOn(false, animated: true)
-        switchControll.addTarget(ScheduleCellTracker.self, action: #selector(addDay), for: .valueChanged)
-        switchControll.onTintColor = .blue
+        
         return switchControll
     }()
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         
         self.layer.cornerRadius = 16
         self.layer.masksToBounds = true
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func roundCorners(corners: CACornerMask, radius: CGFloat) {
@@ -44,7 +51,22 @@ final class ScheduleCellTracker: UITableViewCell {
         switchControll.isOn = isSwithcOn
     }
     
-    @objc func addDay() {
+    private func setupUI() {
+        selectionStyle = .none
+       
+        [titleLabel, switchControll].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            contentView.addSubview($0)
+        }
         
+        NSLayoutConstraint.activate([
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            titleLabel.heightAnchor.constraint(equalToConstant: 22),
+            
+            switchControll.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            switchControll.widthAnchor.constraint(equalToConstant: 51),
+            switchControll.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            ])
     }
 }
