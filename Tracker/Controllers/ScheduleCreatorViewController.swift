@@ -9,9 +9,13 @@ import Foundation
 import UIKit
 
 final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
+    let scheduleCellTracker = ScheduleCellTracker()
     let doneButton = UIButton()
     let tableViewShedule = UITableView()
-    let daysOfWeek = ["Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"]
+    var selectedDays: [WeekDay: Bool] = [:]
+    var daysOfWeek = [
+        "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
+    ]
     let habitVC = HabitCreationScreenVC()
     var onDoneButtonPressed: (() -> Void)?
     
@@ -23,6 +27,9 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
         tableViewShedule.dataSource = self
         tableViewShedule.delegate = self
         createTableViewShedule()
+        WeekDay.allCases.forEach {
+            selectedDays[$0] = false
+        }
     }
     
     //MARK: Methods for creating
@@ -43,7 +50,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
     
     func createTableViewShedule() {
         tableViewShedule.translatesAutoresizingMaskIntoConstraints = false
-        tableViewShedule.register(CustomCell.self, forCellReuseIdentifier: "cellShedule")
+        tableViewShedule.register(ScheduleCellTracker.self, forCellReuseIdentifier: ScheduleCellTracker.reuseIdentifier)
         view.addSubview(tableViewShedule)
         tableViewShedule.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         tableViewShedule.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
@@ -62,11 +69,11 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate {
 
 extension ScheduleCreatorVC: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 7
+        return daysOfWeek.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cellShedule", for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier, for: indexPath) as! ScheduleCellTracker
         cell.textLabel?.text = daysOfWeek[indexPath.row]
         if indexPath.row == 0 {
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
@@ -74,11 +81,11 @@ extension ScheduleCreatorVC: UITableViewDataSource {
         else if indexPath.row == 6 {
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
         }
-        let switchControll = UISwitch()
-        switchControll.addTarget(self, action: #selector(addDayInTracker(_:)), for: .valueChanged)
-        switchControll.onTintColor = .blue
-        cell.accessoryView = switchControll
+        cell.accessoryView = scheduleCellTracker.switchControll
         cell.backgroundColor = UIColor(named: "greyColor")
+        cell.configure(
+            title: daysOfWeek[indexPath.row],
+            isSwithcOn: selectedDays[WeekDay.allCases[indexPath.row]] ?? false)
         return cell
     }
     
@@ -86,16 +93,22 @@ extension ScheduleCreatorVC: UITableViewDataSource {
         return 525/7
     }
     
-    //MARK: @objc metods
+    //MARK: @objc methods
     
-    @objc func addDayInTracker(_ selector: UISwitch) {
-        // TODO: реализовать механизм запоминания дней для трекера и добавить их отображение на ячейку
+    @objc func addDay(sender: UISwitch) {
+        guard let cell = tableViewShedule.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier) as? ScheduleCellTracker,
+              let indexPath = tableViewShedule.indexPath(for: cell) else { return }
         
+        let day = WeekDay.allCases[indexPath.row]
+        selectedDays[day] = sender.isOn
     }
     
     @objc func doneButtonPressed() {
-            onDoneButtonPressed?()
+        onDoneButtonPressed?()
         navigationController?.popViewController(animated: true)
         }
+    
+    //MARK: methods
+    
 }
 

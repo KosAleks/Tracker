@@ -34,7 +34,7 @@ final class ChoiceVC: UIViewController {
         habitButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(habitButton)
-        habitButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 395).isActive = true
+        habitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
         habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         habitButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -49,7 +49,7 @@ final class ChoiceVC: UIViewController {
         irregularEventButton.setTitleColor(UIColor(named: "whiteButton"), for: .normal)
         irregularEventButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(irregularEventButton)
-        irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16).isActive = true
+        irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 20).isActive = true
         irregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
         irregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
         irregularEventButton.heightAnchor.constraint(equalToConstant: 60).isActive = true
@@ -69,7 +69,7 @@ final class ChoiceVC: UIViewController {
     }
     
     @objc func irregularEventButtonTapped() {
-        
+        switchToIrregularEventScreen()
     }
     
     //MARK: Metods
@@ -86,6 +86,11 @@ final class ChoiceVC: UIViewController {
                    self.dismiss(animated: true)
                }
            }
+    
+    func  switchToIrregularEventScreen() {
+        let irregularEventVC = IrregularEventVC()
+        navigationController?.pushViewController(irregularEventVC, animated: true)
+    }
 }
 
 

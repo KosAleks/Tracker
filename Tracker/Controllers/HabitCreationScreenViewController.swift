@@ -16,15 +16,16 @@ final class HabitCreationScreenVC: UIViewController {
     let createButton = UIButton()
     var trackerName = String()
     let constants = Constants()
+    
     weak var delegate: MainScreenDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "whiteColor")
+        createNavigation()
         createEnterTrackerName()
         createCreateButton()
         createCancelButton()
-        createNavigation()
         tableView.delegate = self
         tableView.dataSource = self
         createTableView()
@@ -38,12 +39,12 @@ final class HabitCreationScreenVC: UIViewController {
         enterTrackerName.characterLimit = 38
         enterTrackerName.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(enterTrackerName)
-        enterTrackerName.topAnchor.constraint(equalTo: view.topAnchor, constant: 138).isActive = true
-        enterTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
-        enterTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
-        enterTrackerName.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        enterTrackerName.layer.cornerRadius = 16
-        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        NSLayoutConstraint.activate([
+               enterTrackerName.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
+               enterTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+               enterTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+               enterTrackerName.heightAnchor.constraint(equalToConstant: 75)
+           ])
     }
     
     func createCreateButton() {
@@ -101,6 +102,7 @@ final class HabitCreationScreenVC: UIViewController {
         }
         navigationController?.pushViewController(scheduleCreator, animated: true)
     }
+    
 }
 
 //MARK: Extensions
@@ -123,6 +125,8 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         else if indexPath.row == 1 {
             cell.textLabel?.text = "Расписание"
             cell.roundCorners(corners: [.layerMaxXMinYCorner, .layerMaxXMaxYCorner], radius: 16)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+               cell.layoutMargins = UIEdgeInsets.zero
         }
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor =  UIColor(named: "greyColor")
@@ -140,14 +144,14 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    //MARK: @objc metods
+    //MARK: @objc methods
     
     @objc func switchToMainScreen() {
         dismiss(animated: true)
     }
     
     @objc func createButtonTapped() {
-        delegate?.didCreateNewTracker(title: trackerName, tracker: Tracker(
+        self.delegate?.didCreateNewTracker(title: trackerName, tracker: Tracker(
             id: UUID(),
             name: trackerName,
             color: constants.color,
@@ -166,7 +170,7 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    //MARK: Metods
+    //MARK: methods
     
     func createButtonChanged() {
         self.createButton.backgroundColor = UIColor(named: "blackColor")

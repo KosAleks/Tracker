@@ -32,6 +32,11 @@ final class MainScreen: UIViewController, UISearchBarDelegate, MainScreenDelegat
         return searchBar
     }()
     
+    private let lineView: UIView = {
+        let lineView = UIView()
+        lineView.backgroundColor = UIColor(named: "darkGrey")
+        return lineView
+    }()
     
     private var categories: [TrackerCategory] = []
     var visibleCategories: [TrackerCategory] = []
@@ -47,6 +52,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate, MainScreenDelegat
         createLabel()
         updateUI()
         createCollectionView()
+        createLineView()
     }
     
     //MARK: Methods for creating
@@ -107,7 +113,15 @@ final class MainScreen: UIViewController, UISearchBarDelegate, MainScreenDelegat
         whatWillTrack.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
     }
     
-    //MARK: @objc metods
+    private func createLineView() {
+        view.addSubview(lineView)
+        lineView.translatesAutoresizingMaskIntoConstraints =  false
+        lineView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -84) .isActive = true
+        lineView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        lineView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
+    }
+    //MARK: @objc methods
     
     @objc func leftButtonTapped() {
         switchToChoiceVC()
@@ -122,7 +136,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate, MainScreenDelegat
         print("Пользователь выбрал дату: \(formattedDate)")
     }
     
-    //MARK: Metods
+    //MARK: methods
     
     func addTracker(_ tracker: Tracker, to categoryIndex: Int) {
         categories.append(TrackerCategory(title: title ?? "", arrayTrackers: [tracker]))
