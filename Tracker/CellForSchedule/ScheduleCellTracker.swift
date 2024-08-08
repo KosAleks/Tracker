@@ -53,6 +53,7 @@ final class ScheduleCellTracker: UITableViewCell {
     
     private func setupUI() {
         selectionStyle = .none
+        backgroundColor = UIColor(named: "greyColor")
        
         [titleLabel, switchControll].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false

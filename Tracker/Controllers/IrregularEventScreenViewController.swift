@@ -10,9 +10,18 @@ import UIKit
 
 final class IrregularEventVC: UIViewController {
     
-    let cancelButton = UIButton()
-    let createButton = UIButton()
-    
+    private let cancelButton = UIButton()
+    private let createButton = UIButton()
+    private let labelNewEvent = UILabel()
+    private let enterEventName = UITextField()
+    private let tableView = UITableView()
+    private var eventName = String()
+    private let constants = Constants()
+    private var selectedDays: [WeekDay: Bool] = [:]
+    private let containerView = UIView()
+    private let scrollView = UIScrollView()
+   
+        
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +29,14 @@ final class IrregularEventVC: UIViewController {
         createNavigation()
         createCreateButton()
         createCancelButton()
+        createScrollView()
+        createConteinerView()
+        createEnterEventName()
+        createCreateButton()
+        createCancelButton()
+        createTableView()
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
     private func createNavigation() {
@@ -28,17 +45,34 @@ final class IrregularEventVC: UIViewController {
         navigationItem.hidesBackButton = true
     }
     
-    //MARK: @objc methods
-    @objc func cancelButtonTapped() {
-        dismiss(animated: true)
-    }
-    
-    @objc private func createButtonTapped() {
-        //TODO: create metod
-    }
-    
     //MARK: methods
-    func createCreateButton() {
+    private func createScrollView() {
+        scrollView.isScrollEnabled = true
+        scrollView.showsHorizontalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(scrollView)
+        UIKit.NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            ])
+    }
+    
+   private func createConteinerView() {
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(containerView)
+        UIKit.NSLayoutConstraint.activate([
+            containerView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            containerView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            containerView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
+            ])
+    }
+    
+    private func createCreateButton() {
         createButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         createButton.setTitle("Создать", for: .normal)
         createButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
@@ -54,7 +88,7 @@ final class IrregularEventVC: UIViewController {
         createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
     }
     
-    func createCancelButton() {
+    private func createCancelButton() {
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         cancelButton.setTitle("Отменить", for: .normal)
         cancelButton.setTitleColor(UIColor(named: "coralColor"), for: .normal)
@@ -70,5 +104,85 @@ final class IrregularEventVC: UIViewController {
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped), for: .touchUpInside)
     }
     
+    private func createEnterEventName() {
+        enterEventName.backgroundColor = UIColor(named: "greyColor")
+        enterEventName.placeholder = "Введите название трекера"
+        enterEventName.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(enterEventName)
+        enterEventName.layer.cornerRadius = 16
+        enterEventName.textColor = UIColor(named: "blackColor")
+        enterEventName.characterLimit = 38
+        let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: enterEventName.frame.height))
+        enterEventName.leftView = leftPaddingView
+        enterEventName.leftViewMode = .always
+        UIKit.NSLayoutConstraint.activate([
+            enterEventName.topAnchor.constraint(equalTo: containerView.topAnchor, constant: 24),
+            enterEventName.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
+            enterEventName.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
+            enterEventName.heightAnchor.constraint(equalToConstant: 75)
+            ])
+        enterEventName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+    }
     
+    private func createTableView() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            tableView.topAnchor.constraint(equalTo: enterEventName.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: 150)
+        ])
+    }
+    
+    private func createButtonChanged() {
+        createButton.backgroundColor = UIColor(named: "blackColor")
+        createButton.isEnabled = true
+    }
+    
+    
+    //MARK: @objc methods
+    @objc func cancelButtonTapped() {
+        dismiss(animated: true)
+    }
+    
+    @objc private func createButtonTapped() {
+        //TODO: create metod
+    }
+    
+    
+    @objc func textChanged() {
+        eventName = enterEventName.text ?? ""
+        if eventName.isEmpty {
+            createButton.isEnabled = false
+        } else {
+            createButtonChanged()
+        }
+    }
+    
+}
+
+//MARK: Extensions
+
+extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150 / 2
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
+            cell.textLabel?.text = "Категория"
+            cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
+        cell.backgroundColor = UIColor(named: "greyColor")
+        cell.accessoryType = .disclosureIndicator
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+        cell.layoutMargins = UIEdgeInsets.zero
+        return cell
+    }
 }

@@ -13,6 +13,7 @@
 		234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234043352C3ABABC00DCAA35 /* SceneDelegate.swift */; };
 		2340433D2C3ABABF00DCAA35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2340433C2C3ABABF00DCAA35 /* Assets.xcassets */; };
 		234043402C3ABABF00DCAA35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340433E2C3ABABF00DCAA35 /* LaunchScreen.storyboard */; };
+		2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */; };
 		238AB6D92C5E12EE00765287 /* IrregularEventScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */; };
 		238AB6DB2C5E2ABF00765287 /* Week days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6DA2C5E2ABF00765287 /* Week days.swift */; };
 		238AB6DD2C5E337400765287 /* ScheduleCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6DC2C5E337400765287 /* ScheduleCellTracker.swift */; };
@@ -39,6 +40,7 @@
 		2340433C2C3ABABF00DCAA35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2340433F2C3ABABF00DCAA35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		234043412C3ABABF00DCAA35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularEventScreenViewController.swift; sourceTree = "<group>"; };
 		238AB6DA2C5E2ABF00765287 /* Week days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Week days.swift"; sourceTree = "<group>"; };
 		238AB6DC2C5E337400765287 /* ScheduleCellTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCellTracker.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 			children = (
 				23EBBD132C4D370900C1617B /* ExtensionTextField.swift */,
 				23EBBD152C4D3B4700C1617B /* Constants.swift */,
+				2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				23EE9B902C4467BA00219C3A /* TabBarViewController.swift in Sources */,
 				238AB6DB2C5E2ABF00765287 /* Week days.swift in Sources */,
 				23EE9B8B2C42BB2C00219C3A /* CustomCellForHabitVC.swift in Sources */,
+				2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */,
 				2331299C2C3B7B3A00823183 /* StatisticsViewController.swift in Sources */,
 				234043342C3ABABC00DCAA35 /* AppDelegate.swift in Sources */,
 				234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */,

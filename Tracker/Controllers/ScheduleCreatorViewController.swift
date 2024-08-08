@@ -85,13 +85,16 @@ extension ScheduleCreatorVC: UITableViewDataSource {
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
         } else if indexPath.row == 6 {
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            cell.layoutMargins = UIEdgeInsets.zero
+            
         }
         cell.switchControll.addTarget(self, action: #selector(addDay(sender:)), for: .valueChanged)
         cell.configure(
             title: daysOfWeek[indexPath.row],
             isSwithcOn: selectedDays[WeekDay.allCases[indexPath.row]] ?? false)
-        cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+       // cell.selectionStyle = .none
+       // cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         return cell
     }
     
