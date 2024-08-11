@@ -12,8 +12,8 @@ final class CustomCell: UITableViewCell {
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical
-        stack.spacing = 2
-        stack.alignment = .fill
+        stack.spacing = 12
+        stack.alignment = .top
         stack.distribution = .fillEqually
         return stack
     }()
@@ -35,19 +35,18 @@ final class CustomCell: UITableViewCell {
     }()
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.layer.cornerRadius = 16
         self.layer.masksToBounds = true
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: "cell")
+        super.init(style: .subtitle, reuseIdentifier: "cell")
         setupUI()
     }
     
     private func setupUI() {
-       
-        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
@@ -72,12 +71,13 @@ final class CustomCell: UITableViewCell {
     }
     
     func setDescription(_ model: String) {
-        descriptionLabel.text = model
-        descriptionLabel.textColor = UIColor(named: "darkGrey")
-        if descriptionLabel.text != "" {
-            descriptionLabel.isHidden = false
+        detailTextLabel?.text = model
+        detailTextLabel?.textColor = UIColor(named: "darkGrey")
+        detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        if detailTextLabel?.text != "" {
+            detailTextLabel?.isHidden = false
         } else {
-            descriptionLabel.isHidden = true
+            detailTextLabel?.isHidden = true
         }
     }
 }

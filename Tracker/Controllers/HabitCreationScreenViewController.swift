@@ -89,7 +89,6 @@ final class HabitCreationScreenVC: UIViewController, ScheduleViewControllerDeleg
     private func createTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
