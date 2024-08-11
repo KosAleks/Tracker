@@ -218,7 +218,7 @@ extension MainScreen: UICollectionViewDataSource {
             $0.id == tracker.id
         }.count
         cell.configure(with: tracker, completedDays: completedDays, trackerIsCompleted: isCompletedToday, indexPath: indexPath)
-        cell.backgroundColor = .orange
+        cell.delegate = self
         return cell
     }
     

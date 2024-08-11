@@ -119,15 +119,14 @@ final class CollectionCellTracker: UICollectionViewCell {
       }
     
     @objc private func quantityButtonTapped() {
-        print("quantity Button Tapped")
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId and indexPath")
             return
         }
         if trackerIsCompleted {
-            delegate?.uncompleteTracker(id: trackerId, at: indexPath)
+            self.delegate?.uncompleteTracker(id: trackerId, at: indexPath)
         } else {
-            delegate?.completeTracker(id: trackerId, at: indexPath)
+            self.delegate?.completeTracker(id: trackerId, at: indexPath)
         }
     }
     
@@ -136,7 +135,7 @@ final class CollectionCellTracker: UICollectionViewCell {
         case UIImage(systemName: "plus"):
             quantityButton.backgroundColor = tracker.color
         case UIImage(systemName: "checkmark"):
-            quantityButton.backgroundColor =  tracker.color
+            quantityButton.backgroundColor =  tracker.color.withAlphaComponent(0.3)
         case .none:
             break
         case .some(_):
