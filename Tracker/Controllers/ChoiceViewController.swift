@@ -8,16 +8,13 @@
 import Foundation
 import UIKit
 
-protocol MainScreenDelegate: AnyObject {
-    func didCreateNewTracker(title: String, tracker: Tracker)
-}
 
 final class ChoiceVC: UIViewController {
     
     let habitButton = UIButton()
     let irregularEventButton = UIButton()
     let label = UILabel()
-    weak var delegate: MainScreenDelegate?
+    weak var delegate: NewTrackerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -21,116 +21,93 @@ final class CollectionCellTracker: UICollectionViewCell {
     private var trackerIsCompleted: Bool = false
     private var trackerId: UUID?
     private var indexPath: IndexPath?
-    
-    
-    let label: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .white
-        label.numberOfLines = 2 //текст может занимать до 2х строк
-        label.lineBreakMode = .byWordWrapping
-        return label
-    }()
-    
-    private let emojView:
-    UILabel = {
-        let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textAlignment = .center
-        label.backgroundColor = .white.withAlphaComponent(0.3)
-        label.layer.cornerRadius = 12
-        label.layer.masksToBounds = true
-        return label
-    }()
-
-    private let colorView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = 16
-        return view
-    }()
-    
-    private let quantityButton: UIButton = {
-        let button = UIButton()
-        button.layer.cornerRadius = 17
-        button.tintColor = .white
-        button.clipsToBounds = true
-        button.addTarget(
-            self,
-            action: #selector(quantityButtonTapped),
-            for: .touchUpInside
-        )
-        return button
-    }()
-    
-    private let quantityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1 день"
-        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .black
-        return label
-    }()
+    private let label: UILabel = UILabel()
+    private let colorView = UIView()
+    private let emojView = UILabel()
+    private let quantityButton = UIButton()
+    private let quantityLabel = UILabel()
     
     override init(frame: CGRect) {
         super .init(frame: frame)
-        setup()
+        createColorView()
+        createEmojiView()
+        createLabel()
+        createQuantityButton()
+        createQuantityLabel()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    weak var delegate: TrackerCollectionViewCellDelegate?
-    func setup() {
-    setupConstraints()
-    }
-    private func setupConstraints() {
-        [colorView, label, emojView, quantityLabel, quantityButton].forEach {
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
-        [colorView, emojView, quantityButton, quantityLabel, label].forEach {
-            contentView.addSubview($0)
-        }
-        
-        NSLayoutConstraint.activate([
-            colorView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            colorView.widthAnchor.constraint(equalToConstant: 167),
-            colorView.heightAnchor.constraint(equalToConstant: 90),
-            
-            emojView.topAnchor.constraint(equalTo: colorView.topAnchor, constant: 12),
-            emojView.leadingAnchor.constraint(equalTo: colorView.leadingAnchor, constant: 12),
-            emojView.heightAnchor.constraint(equalToConstant: 24),
-            emojView.widthAnchor.constraint(equalToConstant: 24),
-            
-            label.bottomAnchor.constraint(equalTo: colorView.bottomAnchor, constant: -12),
-            label.leadingAnchor.constraint(equalTo: colorView.leadingAnchor, constant: 12),
-            label.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -12),
-            
-            quantityButton.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8),
-            quantityButton.trailingAnchor.constraint(equalTo: colorView.trailingAnchor),
-            quantityButton.heightAnchor.constraint(equalToConstant: 34),
-            quantityButton.widthAnchor.constraint(equalToConstant: 34),
-            
-            quantityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12),
-            quantityLabel.trailingAnchor.constraint(equalTo: quantityButton.leadingAnchor, constant: -8),
-            quantityLabel.centerYAnchor.constraint(equalTo: quantityButton.centerYAnchor)
-        ])
-    }
-    func configure(with tracker: Tracker, completedDays: Int, trackerIsCompleted: Bool, indexPath: IndexPath) {
-          //label.text = "Поливать растения"
-        label.text = tracker.name
+    private func createLabel() {
         label.font = UIFont(name: "SFPro-Medium", size: 12)
-          colorView.backgroundColor = UIColor(named: "5")
-          //colorView.backgroundColor = tracker.color
-        emojView.text = "😪"
-          //emoji.text = tracker.emoji
+        label.textColor = .white
+        label.numberOfLines = 2 //текст может занимать до 2х строк
+        label.lineBreakMode = .byWordWrapping
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        label.bottomAnchor.constraint(equalTo: colorView.bottomAnchor, constant: -12).isActive = true
+        label.leadingAnchor.constraint(equalTo: colorView.leadingAnchor, constant: 12).isActive = true
+        label.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -12).isActive = true
+    }
+    
+    private func createColorView() {
+        colorView.layer.cornerRadius = 16
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(colorView)
+        colorView.topAnchor.constraint(equalTo: contentView.topAnchor).isActive = true
+        colorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor).isActive = true
+        colorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor).isActive = true
+        colorView.heightAnchor.constraint(equalToConstant: 90).isActive = true
+    }
+    
+    private func createEmojiView() {
+        emojView.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        emojView.textAlignment = .center
+        emojView.backgroundColor = .white.withAlphaComponent(0.3)
+        emojView.layer.cornerRadius = 12
+        emojView.layer.masksToBounds = true
+        emojView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(emojView)
+        emojView.topAnchor.constraint(equalTo: colorView.topAnchor, constant: 12).isActive = true
+        emojView.leadingAnchor.constraint(equalTo: colorView.leadingAnchor, constant: 12).isActive = true
+        emojView.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        emojView.widthAnchor.constraint(equalToConstant: 24).isActive = true
+    }
+    
+    private func createQuantityButton() {
+        quantityButton.layer.cornerRadius = 17
+        quantityButton.tintColor = .white
+        quantityButton.clipsToBounds = true
+        quantityButton.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(quantityButton)
+        quantityButton.topAnchor.constraint(equalTo: colorView.bottomAnchor, constant: 8).isActive = true
+        quantityButton.trailingAnchor.constraint(equalTo: colorView.trailingAnchor).isActive = true
+        quantityButton.heightAnchor.constraint(equalToConstant: 34).isActive = true
+        quantityButton.widthAnchor.constraint(equalToConstant: 34).isActive = true
+        quantityButton.addTarget(self, action: #selector(quantityButtonTapped), for: .touchUpInside)
+    }
+    
+    private func  createQuantityLabel() {
+        quantityLabel.text = "1 день"
+        quantityLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        quantityLabel.textColor = .black
+        quantityLabel.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(quantityLabel)
+        quantityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12).isActive = true
+        quantityLabel.trailingAnchor.constraint(equalTo: quantityButton.leadingAnchor, constant: -8).isActive = true
+        quantityLabel.centerYAnchor.constraint(equalTo: quantityButton.centerYAnchor).isActive = true
+    }
+    
+    func configure(with tracker: Tracker, completedDays: Int, trackerIsCompleted: Bool, indexPath: IndexPath) {
+        label.text = tracker.name
+        colorView.backgroundColor = tracker.color
+        emojView.text = tracker.emoji
         self.trackerIsCompleted = trackerIsCompleted
         self.trackerId = tracker.id
         self.indexPath = indexPath
-          setupQuantityButton(with: tracker)
           quantityLabel.text = setQuantityLabelText(completedDays)
-          setupQuantityButton(with: tracker)
-        
         let imageName = trackerIsCompleted ? "checkmark" : "plus"
         if let image = UIImage(systemName: imageName) {
             quantityButton.setImage(image, for: .normal)
@@ -142,12 +119,11 @@ final class CollectionCellTracker: UICollectionViewCell {
       }
     
     @objc private func quantityButtonTapped() {
-        print("tapped")
+        print("quantity Button Tapped")
         guard let trackerId = trackerId, let indexPath = indexPath else {
             assertionFailure("no trackerId and indexPath")
             return
         }
-
         if trackerIsCompleted {
             delegate?.uncompleteTracker(id: trackerId, at: indexPath)
         } else {
@@ -158,16 +134,17 @@ final class CollectionCellTracker: UICollectionViewCell {
     private func setupQuantityButton(with tracker: Tracker) {
         switch quantityButton.currentImage {
         case UIImage(systemName: "plus"):
-            quantityButton.backgroundColor = UIColor(named: "5")
+            quantityButton.backgroundColor = tracker.color
         case UIImage(systemName: "checkmark"):
-            quantityButton.backgroundColor =  UIColor(named: "5")?.withAlphaComponent(0.3)
+            quantityButton.backgroundColor =  tracker.color
         case .none:
             break
         case .some(_):
             break
         }
-        let plusImage = UIImage(systemName: "checkmark")
-        let checkImage = UIImage(systemName: "plus")
+        _ = UIImage(systemName: "checkmark")
+        _ = UIImage(systemName: "plus")
+        print("Current image: \(quantityButton.currentImage?.description ?? "none")")
     }
     
     private func setQuantityLabelText(_ count: Int) -> String {

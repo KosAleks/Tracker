@@ -18,8 +18,7 @@ final class HabitCreationScreenVC: UIViewController {
     private let containerView = UIView()
     private let scrollView = UIScrollView()
 
-    weak var delegateNewTracker: NewTrackerViewControllerDelegate?
-    weak var delegate: MainScreenDelegate?
+    weak var delegate: NewTrackerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,7 +153,7 @@ final class HabitCreationScreenVC: UIViewController {
     
     @objc func createButtonTapped() {
         guard let newTrackerName = enterTrackerName.text else { return }
-        guard let date = self.delegateNewTracker?.setDateForNewTracker() else { return }
+        guard let date = self.delegate?.setDateForNewTracker() else { return }
         
         var newTrackerSchedule: [String] = []
         
@@ -172,7 +171,7 @@ final class HabitCreationScreenVC: UIViewController {
             schedule: newTrackerSchedule
         )
         
-        self.delegate?.didCreateNewTracker(title: newTrackerName, tracker: newTracker)
+        self.delegate?.didCreateNewTracker(newTracker)
         switchToMainScreen()
     }
     
@@ -220,14 +219,14 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
             if selectedDaysArray.isEmpty {
                 cell.setDescription("")
             } else if selectedDaysArray.count == WeekDay.allCases.count {
-                cell.setDescription("Каждый день")
+                cell.setDescription("Каждый день") // Отображаем "Каждый день", если выбраны все дни
             } else {
                 let selectedDaysString = selectedDaysArray.map { $0.stringValue }.joined(separator: ", ")
-                cell.setDescription(selectedDaysString)
+                cell.setDescription(selectedDaysString) //отображаем выбранные дни
             }
+        } else {
+            cell.setDescription("") // Очищаем описание для других ячеек
         }
-        cell.backgroundColor = UIColor(named: "greyColor")
-        cell.accessoryType = .disclosureIndicator
         return cell
     }
     

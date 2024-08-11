@@ -46,9 +46,13 @@ final class CustomCell: UITableViewCell {
     }
     
     private func setupUI() {
+       
+        
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
+        backgroundColor = UIColor(named: "greyColor")
+        accessoryType = .disclosureIndicator
         contentView.addSubview(stackView)
           
         NSLayoutConstraint.activate([
@@ -69,6 +73,7 @@ final class CustomCell: UITableViewCell {
     
     func setDescription(_ model: String) {
         descriptionLabel.text = model
+        descriptionLabel.textColor = UIColor(named: "darkGrey")
         if descriptionLabel.text != "" {
             descriptionLabel.isHidden = false
         } else {
