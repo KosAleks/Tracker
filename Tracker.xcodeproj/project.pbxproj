@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		231F82CC2C690702007ADD5E /* CustomCellForIrregularEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231F82CB2C690702007ADD5E /* CustomCellForIrregularEvent.swift */; };
 		2331299A2C3B6AA000823183 /* MainScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233129992C3B6AA000823183 /* MainScreen.swift */; };
 		2331299C2C3B7B3A00823183 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2331299B2C3B7B3A00823183 /* StatisticsViewController.swift */; };
 		234043342C3ABABC00DCAA35 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234043332C3ABABC00DCAA35 /* AppDelegate.swift */; };
@@ -33,6 +34,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		231F82CB2C690702007ADD5E /* CustomCellForIrregularEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellForIrregularEvent.swift; sourceTree = "<group>"; };
 		233129992C3B6AA000823183 /* MainScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainScreen.swift; sourceTree = "<group>"; };
 		2331299B2C3B7B3A00823183 /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
 		234043302C3ABABC00DCAA35 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -71,6 +73,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		231F82CA2C6906AF007ADD5E /* CellForIrregularTableView */ = {
+			isa = PBXGroup;
+			children = (
+				231F82CB2C690702007ADD5E /* CustomCellForIrregularEvent.swift */,
+			);
+			path = CellForIrregularTableView;
+			sourceTree = "<group>";
+		};
 		234043272C3ABABC00DCAA35 = {
 			isa = PBXGroup;
 			children = (
@@ -90,6 +100,7 @@
 		234043322C3ABABC00DCAA35 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				231F82CA2C6906AF007ADD5E /* CellForIrregularTableView */,
 				23EBBD122C4D36F700C1617B /* Helpers */,
 				238AB6DE2C5E338C00765287 /* CellForSchedule */,
 				23EBBD0D2C4D369D00C1617B /* CellForCollectionView */,
@@ -251,6 +262,7 @@
 				23EE9B8B2C42BB2C00219C3A /* CustomCellForHabitVC.swift in Sources */,
 				2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */,
 				2331299C2C3B7B3A00823183 /* StatisticsViewController.swift in Sources */,
+				231F82CC2C690702007ADD5E /* CustomCellForIrregularEvent.swift in Sources */,
 				234043342C3ABABC00DCAA35 /* AppDelegate.swift in Sources */,
 				239C6A4B2C68D6D10054F0A9 /* CategoryViewController.swift in Sources */,
 				234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */,

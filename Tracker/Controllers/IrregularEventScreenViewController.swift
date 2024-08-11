@@ -10,6 +10,8 @@ import UIKit
 
 final class IrregularEventVC: UIViewController {
     
+    weak var delegate: NewTrackerViewControllerDelegate?
+    
     private let cancelButton = UIButton()
     private let createButton = UIButton()
     private let labelNewEvent = UILabel()
@@ -20,9 +22,10 @@ final class IrregularEventVC: UIViewController {
     private var selectedDays: [WeekDay: Bool] = [:]
     private let containerView = UIView()
     private let scrollView = UIScrollView()
-   
+    private var selectedColor: UIColor?
+    private var selectedEmoji: String?
+    private let constant = Constants()
         
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "whiteColor")
@@ -128,7 +131,7 @@ final class IrregularEventVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(CustomCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CustomCellForIrregularEvent.self, forCellReuseIdentifier: CustomCellForIrregularEvent.identifier)
         NSLayoutConstraint.activate([
             tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
@@ -149,7 +152,16 @@ final class IrregularEventVC: UIViewController {
     }
     
     @objc private func createButtonTapped() {
-        //TODO: create metod
+        guard let newTrackerName = enterEventName.text else { return }
+        let newTracker = Tracker(
+            id: UUID(),
+            name: newTrackerName,
+            color: selectedColor ?? constant.color,
+            emoji: selectedEmoji ?? constant.emojiArray.randomElement() ?? "🐶",
+            schedule: []
+        )
+        delegate?.didCreateNewTracker(newTracker)
+        dismiss(animated: true)
     }
     
     
@@ -176,13 +188,14 @@ extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForIrregularEvent.identifier, for: indexPath) as! CustomCellForIrregularEvent
             cell.textLabel?.text = "Категория"
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
         cell.backgroundColor = UIColor(named: "greyColor")
         cell.accessoryType = .disclosureIndicator
         cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         cell.layoutMargins = UIEdgeInsets.zero
+       // cell.setDescription("") раскомментить и добавить что дб в detailTextLabel
         return cell
     }
 }

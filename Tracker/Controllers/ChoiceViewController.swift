@@ -86,6 +86,7 @@ final class ChoiceVC: UIViewController {
     
     func  switchToIrregularEventScreen() {
         let irregularEventVC = IrregularEventVC()
+        irregularEventVC.delegate = delegate
         navigationController?.pushViewController(irregularEventVC, animated: true)
     }
 }

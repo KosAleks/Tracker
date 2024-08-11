@@ -18,7 +18,7 @@ final class HabitCreationScreenVC: UIViewController, ScheduleViewControllerDeleg
     let cancelButton = UIButton()
     let createButton = UIButton()
     var trackerName = String()
-    let constants = Constants()
+    private let constants = Constants()
     var selectedDays: [WeekDay: Bool] = [:]
     private let containerView = UIView()
     private let scrollView = UIScrollView()
