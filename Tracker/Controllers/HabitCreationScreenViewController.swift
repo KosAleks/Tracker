@@ -6,7 +6,12 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
     func didCreateNewTracker(_ tracker: Tracker)
 }
 
-final class HabitCreationScreenVC: UIViewController {
+final class HabitCreationScreenVC: UIViewController, ScheduleViewControllerDelegate {
+    func didSelectDays(_ days: [WeekDay: Bool]) {
+            selectedDays = days
+            tableView.reloadData()
+        }
+
     let labelNewHabit = UILabel()
     let enterTrackerName = UITextField()
     let tableView = UITableView()
@@ -139,6 +144,8 @@ final class HabitCreationScreenVC: UIViewController {
     
     private func switchToScheduleCreator() {
         let scheduleCreator = ScheduleCreatorVC()
+        scheduleCreator.delegate = self
+        scheduleCreator.selectedDays = selectedDays
         scheduleCreator.onDoneButtonPressed = {
             [weak self] in self?.createButtonChanged()
         }
@@ -229,11 +236,18 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
+
+            func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+                switch indexPath.row {
+                case 0:
+                    let categoryVC = CategoryViewController()
+                    navigationController?.pushViewController(categoryVC, animated: true)
+                case 1:
+                    switchToScheduleCreator()
+                default:
+                    break
+                }
+            }
+        
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        if indexPath.row == 1 {
-            switchToScheduleCreator()
-        }
-    }
 }

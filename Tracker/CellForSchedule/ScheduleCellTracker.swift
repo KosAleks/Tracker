@@ -22,7 +22,7 @@ final class ScheduleCellTracker: UITableViewCell {
         let switchControll = UISwitch()
         switchControll.onTintColor = .blue
         switchControll.setOn(false, animated: true)
-        
+        switchControll.addTarget(self, action: #selector(switchViewChanged), for: .valueChanged)
         return switchControll
     }()
     override func awakeFromNib() {
@@ -41,6 +41,10 @@ final class ScheduleCellTracker: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    @objc private func switchViewChanged() {
+        print("switch changed")
+    }
+    
     func roundCorners(corners: CACornerMask, radius: CGFloat) {
         self.layer.cornerRadius = radius
         self.layer.maskedCorners = corners
@@ -49,6 +53,7 @@ final class ScheduleCellTracker: UITableViewCell {
     func configure(title: String, isSwithcOn: Bool) {
         titleLabel.text = title
         switchControll.isOn = isSwithcOn
+        
     }
     
     private func setupUI() {
@@ -61,9 +66,9 @@ final class ScheduleCellTracker: UITableViewCell {
         }
         
         NSLayoutConstraint.activate([
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-            titleLabel.heightAnchor.constraint(equalToConstant: 22),
+            titleLabel.heightAnchor.constraint(equalToConstant: 20),
             
             switchControll.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             switchControll.widthAnchor.constraint(equalToConstant: 51),
