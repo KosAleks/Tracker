@@ -11,8 +11,9 @@ import UIKit
 final class MainScreen: UIViewController, UISearchBarDelegate {
     private var starImage = UIImageView()
     private let whatWillTrack = UILabel()
+   
     private var collectionView: UICollectionView = {
-        let collectionView = UICollectionView(
+    let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CollectionCellTracker.self, forCellWithReuseIdentifier: CollectionCellTracker.reuseIdentifier)
@@ -135,11 +136,17 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     
     private func filteredTrackers() {
         let calendar = Calendar.current
+        let selectedDate = calendar.component(.day, from: datePicker.date)
+        let selectedDateString = String(selectedDate)
+        // получили выбранную дату на которую тыкнули
+        //нужно проверить есть ли в выбранную дату какие-то нерегулярные события
+        print("\(selectedDate)")
         let selectedWeekDay = calendar.component(.weekday, from: currentDate) - 1
         let selectedDayString = WeekDay(rawValue: selectedWeekDay)?.stringValue ?? ""
         
         visibleCategories = categories.compactMap { category in
-            let filteredTrackers = category.arrayTrackers.filter { tracker in
+            let filteredTrackers = category.arrayTrackers.filter {
+                tracker in
                 return tracker.schedule.contains(selectedDayString)
             }
             return !filteredTrackers.isEmpty ? TrackerCategory(title: category.title, arrayTrackers: filteredTrackers) : nil
@@ -150,17 +157,16 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     //MARK: methods
     
     func addTracker(_ tracker: Tracker, to categoryIndex: Int) {
-        categories.append(TrackerCategory(title: title ?? "", arrayTrackers: [tracker]))
+        if categoryIndex < categories.count {
+            categories[categoryIndex].arrayTrackers.append(tracker)
+        } else {
+            let newCategory = TrackerCategory(title: "Новая категория", arrayTrackers: [tracker])
+            categories.append(newCategory)
+        }
         visibleCategories = categories
         updateUI()
     }
-    
-    func addTrackerComplited(id: UUID, date: Date) {
-        completedTrackers.contains(TrackerRecord(
-            id: id,
-            date: date))
-    }
-    
+
     private func switchToChoiceVC () {
         let choiceVC = ChoiceVC()
         choiceVC.delegate = self
@@ -169,7 +175,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         present(navController, animated: true)
     }
     
-    func updateUI() {
+    private func updateUI() {
         if visibleCategories.isEmpty {
             collectionView.isHidden = true
         } else {

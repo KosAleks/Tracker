@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-final class CustomCell: UITableViewCell {
+final class CustomCellHabit: UITableViewCell {
+    static let identifier = "habitCell"
     private let stackView: UIStackView = {
         let stack = UIStackView()
         stack.axis = .vertical

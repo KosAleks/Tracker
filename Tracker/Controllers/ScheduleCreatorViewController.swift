@@ -19,14 +19,14 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
         }
     
     weak var delegate: ScheduleViewControllerDelegate?
-    let doneButton = UIButton()
-    let tableViewShedule = UITableView()
+    private let doneButton = UIButton()
+    private let tableViewShedule = UITableView()
     var selectedDays: [WeekDay: Bool] = [:]
-    var daysOfWeek = [
+    private var daysOfWeek = [
         "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
     ]
-    let switchControll = UISwitch()
-    let habitVC = HabitCreationScreenVC()
+   
+    private let habitVC = HabitCreationScreenVC()
     var onDoneButtonPressed: (() -> Void)?
     
     override func viewDidLoad() {
@@ -44,7 +44,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
     
     //MARK: Methods for creating
     
-    func createDoneButton() {
+    private func createDoneButton() {
         doneButton.backgroundColor = UIColor(named: "blackColor")
         doneButton.setTitle("Готово", for: .normal)
         doneButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
@@ -58,7 +58,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
         doneButton.addTarget(self, action: #selector(doneButtonPressed), for: .touchUpInside)
     }
     
-    func createTableViewShedule() {
+    private func createTableViewShedule() {
         tableViewShedule.translatesAutoresizingMaskIntoConstraints = false
         tableViewShedule.register(ScheduleCellTracker.self, forCellReuseIdentifier: ScheduleCellTracker.reuseIdentifier)
         view.addSubview(tableViewShedule)
@@ -68,7 +68,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
         tableViewShedule.bottomAnchor.constraint(equalTo: doneButton.topAnchor, constant: -47).isActive = true
     }
     
-    func createNavigation() {
+    private func createNavigation() {
         navigationItem.title = "Расписание"
         navigationController?.isNavigationBarHidden = false
         navigationItem.hidesBackButton = true
@@ -90,6 +90,7 @@ extension ScheduleCreatorVC: UITableViewDataSource {
         } else if indexPath.row == 6 {
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
             cell.layoutMargins = UIEdgeInsets.zero
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) // убираем нижнюю черту под помследней ячейкой
         }
         
         cell.switchControll.addTarget(self, action: #selector(addDay(sender:)), for: .valueChanged)
@@ -97,7 +98,6 @@ extension ScheduleCreatorVC: UITableViewDataSource {
             title: daysOfWeek[indexPath.row],
             isSwithcOn: selectedDays[WeekDay.allCases[indexPath.row]] ?? false)
         cell.selectionStyle = .none
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
 
         return cell
     }
