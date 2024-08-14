@@ -54,6 +54,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         createCollectionView()
         createLineView()
         updateUI()
+        hideKeyboardWhenTappedAround() 
     }
     
     //MARK: Methods for setup UI

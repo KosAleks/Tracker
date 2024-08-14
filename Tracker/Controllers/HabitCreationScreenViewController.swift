@@ -51,6 +51,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             tableView.register(CustomCellHabit.self, forCellReuseIdentifier: CustomCellHabit.identifier)
             tableView.delegate = self
             tableView.dataSource = self
+            hideKeyboardWhenTappedAround() 
     }
    
     //MARK: Methods

@@ -32,6 +32,7 @@
 		23EE9B892C41B76300219C3A /* ScheduleCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B882C41B76300219C3A /* ScheduleCreatorViewController.swift */; };
 		23EE9B8B2C42BB2C00219C3A /* CustomCellForHabitVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B8A2C42BB2C00219C3A /* CustomCellForHabitVC.swift */; };
 		23EE9B902C4467BA00219C3A /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B8F2C4467BA00219C3A /* TabBarViewController.swift */; };
+		23F872D62C6D2904003D4138 /* HideKeyBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F872D52C6D2904003D4138 /* HideKeyBoard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		23EE9B882C41B76300219C3A /* ScheduleCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCreatorViewController.swift; sourceTree = "<group>"; };
 		23EE9B8A2C42BB2C00219C3A /* CustomCellForHabitVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellForHabitVC.swift; sourceTree = "<group>"; };
 		23EE9B8F2C4467BA00219C3A /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		23F872D52C6D2904003D4138 /* HideKeyBoard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HideKeyBoard.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +144,7 @@
 				23EBBD132C4D370900C1617B /* ExtensionTextField.swift */,
 				23EBBD152C4D3B4700C1617B /* Constants.swift */,
 				2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */,
+				23F872D52C6D2904003D4138 /* HideKeyBoard.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -266,6 +269,7 @@
 				23EE9B8B2C42BB2C00219C3A /* CustomCellForHabitVC.swift in Sources */,
 				2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */,
 				2331299C2C3B7B3A00823183 /* StatisticsViewController.swift in Sources */,
+				23F872D62C6D2904003D4138 /* HideKeyBoard.swift in Sources */,
 				231F82CC2C690702007ADD5E /* CustomCellForIrregularEvent.swift in Sources */,
 				234043342C3ABABC00DCAA35 /* AppDelegate.swift in Sources */,
 				239C6A4B2C68D6D10054F0A9 /* CategoryViewController.swift in Sources */,

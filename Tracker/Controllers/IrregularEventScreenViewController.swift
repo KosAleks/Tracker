@@ -48,6 +48,7 @@ final class IrregularEventVC: BaseVCClass {
         tableView.register(CustomCellForIrregularEvent.self, forCellReuseIdentifier: CustomCellForIrregularEvent.identifier)
         tableView.delegate = self
         tableView.dataSource = self
+        hideKeyboardWhenTappedAround() 
     }
     
     //MARK: @objc methods
