@@ -14,9 +14,9 @@ protocol ScheduleViewControllerDelegate: AnyObject {
 
 final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleViewControllerDelegate {
     func didSelectDays(_ days: [WeekDay: Bool]) {
-            selectedDays = days
+        selectedDays = days
         tableViewShedule.reloadData()
-        }
+    }
     
     weak var delegate: ScheduleViewControllerDelegate?
     private let doneButton = UIButton()
@@ -25,7 +25,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
     private var daysOfWeek = [
         "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота", "Воскресенье"
     ]
-   
+    
     private let habitVC = HabitCreationScreenVC()
     var onDoneButtonPressed: (() -> Void)?
     
@@ -42,7 +42,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
         }
     }
     
-    //MARK: Methods for creating
+    //MARK: Methods for setup UI
     
     private func createDoneButton() {
         doneButton.backgroundColor = UIColor(named: "blackColor")
@@ -84,7 +84,7 @@ extension ScheduleCreatorVC: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCellTracker.reuseIdentifier, for: indexPath) as? ScheduleCellTracker else { return UITableViewCell() }
-            
+        
         if indexPath.row == 0 {
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
         } else if indexPath.row == 6 {
@@ -98,14 +98,14 @@ extension ScheduleCreatorVC: UITableViewDataSource {
             title: daysOfWeek[indexPath.row],
             isSwithcOn: selectedDays[WeekDay.allCases[indexPath.row]] ?? false)
         cell.selectionStyle = .none
-
+        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 525/7
     }
-   
+    
     //MARK: @objc methods
     
     @objc func addDay(sender: UISwitch) {
@@ -122,8 +122,5 @@ extension ScheduleCreatorVC: UITableViewDataSource {
         onDoneButtonPressed?()
         navigationController?.popViewController(animated: true)
     }
-    
-    //MARK: methods
-    
 }
 

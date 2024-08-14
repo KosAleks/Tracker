@@ -16,8 +16,9 @@ class BaseVCClass: UIViewController {
     let cancelButton = UIButton()
     let createButton = UIButton()
     var trackerName = String()
-    
     let scrollView = UIScrollView()
+    
+    //MARK: Methods for setup UI
     
     func createScrollView() {
         scrollView.isScrollEnabled = true
@@ -29,7 +30,7 @@ class BaseVCClass: UIViewController {
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
+        ])
     }
     
     func createConteinerView() {
@@ -42,7 +43,7 @@ class BaseVCClass: UIViewController {
             containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             containerView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
-            ])
+        ])
     }
     
     func createEnterTrackerName() {
@@ -61,7 +62,7 @@ class BaseVCClass: UIViewController {
             enterTrackerName.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
             enterTrackerName.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
             enterTrackerName.heightAnchor.constraint(equalToConstant: 75)
-            ])
+        ])
     }
     
     func createTableView() {
@@ -74,13 +75,13 @@ class BaseVCClass: UIViewController {
             tableView.heightAnchor.constraint(equalToConstant: 150)
         ])
     }
-  
+    
     func setupButton(_ button: UIButton,
-                         title: String,
-                         titleColor: UIColor,
-                         backgroundColor: UIColor?,
-                         borderColor: UIColor?,
-                         isEnabled: Bool,
+                     title: String,
+                     titleColor: UIColor,
+                     backgroundColor: UIColor?,
+                     borderColor: UIColor?,
+                     isEnabled: Bool,
                      isCancelButton: Bool) {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitle(title, for: .normal)
@@ -88,15 +89,15 @@ class BaseVCClass: UIViewController {
         button.backgroundColor = backgroundColor
         button.layer.cornerRadius = 16
         if let borderColor = borderColor {
-                button.layer.borderColor = borderColor.cgColor
-                button.layer.borderWidth = 1
-            }
+            button.layer.borderColor = borderColor.cgColor
+            button.layer.borderWidth = 1
+        }
         button.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(button)
         var constraints = [
-                button.widthAnchor.constraint(equalToConstant: 166),
-                button.heightAnchor.constraint(equalToConstant: 60),
-                button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -34)
+            button.widthAnchor.constraint(equalToConstant: 166),
+            button.heightAnchor.constraint(equalToConstant: 60),
+            button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -34)
         ]
         if isCancelButton {
             constraints.append(button.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20))
@@ -106,12 +107,20 @@ class BaseVCClass: UIViewController {
         }
         NSLayoutConstraint.activate(constraints)
     }
-
+    
+    //MARK: Methods
     
     func createNavigation() {
         navigationController?.isNavigationBarHidden = false
         navigationItem.hidesBackButton = true
     }
+    
+    func createButtonChanged() {
+        createButton.backgroundColor = UIColor(named: "blackColor")
+        createButton.isEnabled = true
+    }
+    
+    //MARK: @objc methods
     
     @objc func textChanged() {
         trackerName = enterTrackerName.text ?? ""
@@ -121,10 +130,4 @@ class BaseVCClass: UIViewController {
             createButtonChanged()
         }
     }
-    
-    func createButtonChanged() {
-        createButton.backgroundColor = UIColor(named: "blackColor")
-        createButton.isEnabled = true
-    }
-    
 }

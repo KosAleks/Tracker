@@ -142,7 +142,6 @@
 				23EBBD132C4D370900C1617B /* ExtensionTextField.swift */,
 				23EBBD152C4D3B4700C1617B /* Constants.swift */,
 				2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */,
-				23A04D232C6BC96300B84CF1 /* BaseVCClass.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -161,6 +160,7 @@
 		23EE9B7F2C3FAB9800219C3A /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				23A04D232C6BC96300B84CF1 /* BaseVCClass.swift */,
 				233129992C3B6AA000823183 /* MainScreen.swift */,
 				2331299B2C3B7B3A00823183 /* StatisticsViewController.swift */,
 				23EE9B842C40399B00219C3A /* ChoiceViewController.swift */,

@@ -10,7 +10,6 @@ import UIKit
 
 
 final class ChoiceVC: UIViewController {
-    
     private let habitButton = UIButton()
     private let eventButton = UIButton()
     private let label = UILabel()
@@ -23,6 +22,8 @@ final class ChoiceVC: UIViewController {
         createHabitButton()
         creatEventButton()
     }
+    
+    //MARK: Methods for setup UI
     
     private func createHabitButton() {
         habitButton.backgroundColor = UIColor(named: "blackColor")
@@ -60,16 +61,8 @@ final class ChoiceVC: UIViewController {
         navigationItem.hidesBackButton = true
     }
     
-    //MARK: Objc metods
-    @objc func habitButtonTapped() {
-        swithToHabitCreationScreen()
-    }
-    
-    @objc func eventButtonTapped() {
-        switchToIrregularEventScreen()
-    }
-    
     //MARK: Metods
+    
     private func swithToHabitCreationScreen() {
         let habitCreationVC = HabitCreationScreenVC()
         habitCreationVC.delegate = delegate
@@ -78,16 +71,26 @@ final class ChoiceVC: UIViewController {
     
     private func switchToMainScreen() {
         if let navigationController = self.navigationController {
-                   navigationController.popToRootViewController(animated: true)
-               } else {
-                   self.dismiss(animated: true)
-               }
-           }
+            navigationController.popToRootViewController(animated: true)
+        } else {
+            self.dismiss(animated: true)
+        }
+    }
     
     private func  switchToIrregularEventScreen() {
         let irregularEventVC = IrregularEventVC()
         irregularEventVC.delegate = delegate
         navigationController?.pushViewController(irregularEventVC, animated: true)
+    }
+    
+    //MARK: Objc metods
+    
+    @objc func habitButtonTapped() {
+        swithToHabitCreationScreen()
+    }
+    
+    @objc func eventButtonTapped() {
+        switchToIrregularEventScreen()
     }
 }
 

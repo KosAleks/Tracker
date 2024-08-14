@@ -53,6 +53,8 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             tableView.dataSource = self
     }
    
+    //MARK: Methods
+    
     private func switchToScheduleCreator() {
         let scheduleCreator = ScheduleCreatorVC()
         scheduleCreator.delegate = self

@@ -40,6 +40,8 @@ final class CollectionCellTracker: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Methods for setup UI
+    
     private func createLabel() {
         label.font = UIFont(name: "SFPro-Medium", size: 12)
         label.textColor = .white
@@ -100,6 +102,8 @@ final class CollectionCellTracker: UICollectionViewCell {
         quantityLabel.centerYAnchor.constraint(equalTo: quantityButton.centerYAnchor).isActive = true
     }
     
+    //MARK: Methods
+    
     func configure(with tracker: Tracker, completedDays: Int, trackerIsCompleted: Bool, indexPath: IndexPath) {
         label.text = tracker.name
         colorView.backgroundColor = tracker.color
@@ -107,7 +111,7 @@ final class CollectionCellTracker: UICollectionViewCell {
         self.trackerIsCompleted = trackerIsCompleted
         self.trackerId = tracker.id
         self.indexPath = indexPath
-          quantityLabel.text = setQuantityLabelText(completedDays)
+        quantityLabel.text = setQuantityLabelText(completedDays)
         let imageName = trackerIsCompleted ? "checkmark" : "plus"
         if let image = UIImage(systemName: imageName) {
             quantityButton.setImage(image, for: .normal)
@@ -116,18 +120,6 @@ final class CollectionCellTracker: UICollectionViewCell {
         quantityLabel.text = setQuantityLabelText(completedDays)
         quantityLabel.font =  UIFont(name: "SFPro-Medium", size: 12)
         setupQuantityButton(with: tracker)
-      }
-    
-    @objc private func quantityButtonTapped() {
-        guard let trackerId = trackerId, let indexPath = indexPath else {
-            assertionFailure("no trackerId and indexPath")
-            return
-        }
-        if trackerIsCompleted {
-            self.delegate?.uncompleteTracker(id: trackerId, at: indexPath)
-        } else {
-            self.delegate?.completeTracker(id: trackerId, at: indexPath)
-        }
     }
     
     private func setupQuantityButton(with tracker: Tracker) {
@@ -166,9 +158,22 @@ final class CollectionCellTracker: UICollectionViewCell {
                 formIndex = 0
             }
         }
-        
         return "\(count) \(daysForms[formIndex])"
     }
-  }
+    
+    //MARK: @objc methods
+    
+    @objc private func quantityButtonTapped() {
+        guard let trackerId = trackerId, let indexPath = indexPath else {
+            assertionFailure("no trackerId and indexPath")
+            return
+        }
+        if trackerIsCompleted {
+            self.delegate?.uncompleteTracker(id: trackerId, at: indexPath)
+        } else {
+            self.delegate?.completeTracker(id: trackerId, at: indexPath)
+        }
+    }
+}
 
 

@@ -21,7 +21,7 @@ extension UITextField {
             addTarget(self, action: #selector(limitLength), for: .editingChanged)
         }
     }
-
+    
     @objc func limitLength() {
         if let text = self.text, text.count > characterLimit {
             self.text = String(text.prefix(characterLimit))

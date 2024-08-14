@@ -10,7 +10,6 @@ import UIKit
 
 final class ScheduleCellTracker: UITableViewCell {
     static let reuseIdentifier = "scheduleCell"
-    
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .regular)
@@ -25,9 +24,9 @@ final class ScheduleCellTracker: UITableViewCell {
         switchControll.addTarget(self, action: #selector(switchViewChanged), for: .valueChanged)
         return switchControll
     }()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        
         self.layer.cornerRadius = 16
         self.layer.masksToBounds = true
     }
@@ -41,25 +40,12 @@ final class ScheduleCellTracker: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    @objc private func switchViewChanged() {
-        print("switch changed")
-    }
-    
-    func roundCorners(corners: CACornerMask, radius: CGFloat) {
-        self.layer.cornerRadius = radius
-        self.layer.maskedCorners = corners
-    }
-    
-    func configure(title: String, isSwithcOn: Bool) {
-        titleLabel.text = title
-        switchControll.isOn = isSwithcOn
-        
-    }
+    //MARK: Methods for setup UI
     
     private func setupUI() {
         selectionStyle = .none
         backgroundColor = UIColor(named: "greyColor")
-       
+        
         [titleLabel, switchControll].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             contentView.addSubview($0)
@@ -73,6 +59,24 @@ final class ScheduleCellTracker: UITableViewCell {
             switchControll.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             switchControll.widthAnchor.constraint(equalToConstant: 51),
             switchControll.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            ])
+        ])
+    }
+    
+    //MARK: Methods
+    
+    func roundCorners(corners: CACornerMask, radius: CGFloat) {
+        self.layer.cornerRadius = radius
+        self.layer.maskedCorners = corners
+    }
+    
+    func configure(title: String, isSwithcOn: Bool) {
+        titleLabel.text = title
+        switchControll.isOn = isSwithcOn
+    }
+    
+    //MARK: @objc methods
+    
+    @objc private func switchViewChanged() {
+        print("switch changed")
     }
 }

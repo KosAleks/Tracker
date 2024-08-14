@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 final class SupplementaryView: UICollectionReusableView {
-  static let reuseIdentifier = "SupplementaryViewHeader"
+    static let reuseIdentifier = "SupplementaryViewHeader"
     let titleLabel = UILabel()
     
     override init(frame: CGRect) {
@@ -21,6 +21,8 @@ final class SupplementaryView: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    //MARK: Methods
+    
     private func setupTitleLable() {
         addSubview(titleLabel)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -28,7 +30,7 @@ final class SupplementaryView: UICollectionReusableView {
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor),
             titleLabel.heightAnchor.constraint(equalToConstant: 30)
-                ])
+        ])
     }
     
     func setTitle(title: String) {

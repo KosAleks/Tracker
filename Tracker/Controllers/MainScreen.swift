@@ -11,9 +11,9 @@ import UIKit
 final class MainScreen: UIViewController, UISearchBarDelegate {
     private var starImage = UIImageView()
     private let whatWillTrack = UILabel()
-   
+    
     private var collectionView: UICollectionView = {
-    let collectionView = UICollectionView(
+        let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CollectionCellTracker.self, forCellWithReuseIdentifier: CollectionCellTracker.reuseIdentifier)
@@ -56,7 +56,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         updateUI()
     }
     
-    //MARK: Methods for creating
+    //MARK: Methods for setup UI
     
     private func createCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -122,39 +122,26 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         lineView.heightAnchor.constraint(equalToConstant: 1).isActive = true
     }
     
-    //MARK: @objc methods
-    
-    @objc func leftButtonTapped() {
-        switchToChoiceVC()
-    }
-    
-    @objc func datePickerChanged(_ sender: UIDatePicker) {
-        currentDate = sender.date
-        filteredTrackers()
-        updateUI()
-    }
+    //MARK: Methods
     
     private func filteredTrackers() {
         let calendar = Calendar.current
         let selectedDate = calendar.component(.day, from: datePicker.date)
         let selectedDateString = String(selectedDate)
-        // получили выбранную дату на которую тыкнули
-        //нужно проверить есть ли в выбранную дату какие-то нерегулярные события
-        print("\(selectedDate)")
         let selectedWeekDay = calendar.component(.weekday, from: currentDate) - 1
         let selectedDayString = WeekDay(rawValue: selectedWeekDay)?.stringValue ?? ""
-        
         visibleCategories = categories.compactMap { category in
-            let filteredTrackers = category.arrayTrackers.filter {
-                tracker in
-                return tracker.schedule.contains(selectedDayString)
+            let filteredTrackers = category.arrayTrackers.filter { tracker in
+                let matchesDayOfWeek = tracker.schedule.contains(selectedDayString)
+                let matchesDate = tracker.schedule.contains(selectedDateString)
+                
+                return matchesDayOfWeek || matchesDate
             }
             return !filteredTrackers.isEmpty ? TrackerCategory(title: category.title, arrayTrackers: filteredTrackers) : nil
         }
-            collectionView.reloadData()
+        
+        collectionView.reloadData()
     }
-    
-    //MARK: methods
     
     func addTracker(_ tracker: Tracker, to categoryIndex: Int) {
         if categoryIndex < categories.count {
@@ -166,7 +153,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         visibleCategories = categories
         updateUI()
     }
-
+    
     private func switchToChoiceVC () {
         let choiceVC = ChoiceVC()
         choiceVC.delegate = self
@@ -193,6 +180,18 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     private func isSameTrackerRecord(trackerRecord: TrackerRecord, id: UUID) -> Bool {
         let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
         return trackerRecord.id == id && isSameDay
+    }
+    
+    //MARK: @objc methods
+    
+    @objc func leftButtonTapped() {
+        switchToChoiceVC()
+    }
+    
+    @objc func datePickerChanged(_ sender: UIDatePicker) {
+        currentDate = sender.date
+        filteredTrackers()
+        updateUI()
     }
 }
 
@@ -258,7 +257,6 @@ extension MainScreen: UICollectionViewDataSource {
         return view
     }
 }
-
 
 extension MainScreen: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
