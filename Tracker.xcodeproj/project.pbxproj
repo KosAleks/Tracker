@@ -104,11 +104,8 @@
 		234043322C3ABABC00DCAA35 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				231F82CA2C6906AF007ADD5E /* CellForIrregularTableView */,
+				23EDE0DB2C6D34B100E7F6A3 /* Cells */,
 				23EBBD122C4D36F700C1617B /* Helpers */,
-				238AB6DE2C5E338C00765287 /* CellForSchedule */,
-				23EBBD0D2C4D369D00C1617B /* CellForCollectionView */,
-				23EE9B8C2C42C0CE00219C3A /* CellsForTableViews */,
 				23EE9B7F2C3FAB9800219C3A /* Controllers */,
 				23EE9B7E2C3FAB7400219C3A /* Model's */,
 				234043332C3ABABC00DCAA35 /* AppDelegate.swift */,
@@ -147,6 +144,17 @@
 				23F872D52C6D2904003D4138 /* HideKeyBoard.swift */,
 			);
 			path = Helpers;
+			sourceTree = "<group>";
+		};
+		23EDE0DB2C6D34B100E7F6A3 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				23EE9B8C2C42C0CE00219C3A /* CellsForTableViews */,
+				23EBBD0D2C4D369D00C1617B /* CellForCollectionView */,
+				238AB6DE2C5E338C00765287 /* CellForSchedule */,
+				231F82CA2C6906AF007ADD5E /* CellForIrregularTableView */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		23EE9B7E2C3FAB7400219C3A /* Model's */ = {

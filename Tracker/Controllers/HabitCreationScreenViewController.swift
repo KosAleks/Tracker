@@ -113,7 +113,7 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
-            
+            cell.isUserInteractionEnabled = false
         } else if indexPath.row == 1 {
             cell.textLabel?.text = "Расписание"
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
