@@ -13,6 +13,8 @@ final class IrregularEventVC: BaseVCClass {
     private var selectedEmojiEvent: String?
     private let constant = Constants()
     weak var delegate: NewTrackerViewControllerDelegate?
+    private var selectedColor: UIColor?
+    private var selectedEmoji: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +24,9 @@ final class IrregularEventVC: BaseVCClass {
         createEnterTrackerName()
         enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         createTableView()
+        setupCollectionViewForHabitVC()
+        collectionViewForHabitVC.dataSource = self
+        collectionViewForHabitVC.delegate = self
         setupButton(
             createButton,
             title: "Создать",
@@ -48,6 +53,7 @@ final class IrregularEventVC: BaseVCClass {
         tableView.register(CustomCellForIrregularEvent.self, forCellReuseIdentifier: CustomCellForIrregularEvent.identifier)
         tableView.delegate = self
         tableView.dataSource = self
+        setupButtonStack()
         hideKeyboardWhenTappedAround() 
     }
     
@@ -59,28 +65,11 @@ final class IrregularEventVC: BaseVCClass {
     
     @objc private func createButtonForIrregularEventTapped() {
         guard let newTrackerName = enterTrackerName.text else { return }
-        
-        // Предположим, что у вас есть DatePicker и вы получили из него дату
-        let date = Date() // Здесь можно заменить на datePicker.date
-        
-        // Создаем DateFormatter
+        let date = Date()
         let dateFormatter = DateFormatter()
-        
-        // Устанавливаем формат только для дня
         dateFormatter.dateFormat = "dd"
-        
-        // Преобразуем дату в строку
         let dayString = dateFormatter.string(from: date)
-        
-        // Выводим строку
-        print(dayString) // выводит сегодняшний день 14,- формат стринг 
-        
-        //let datePickerDate = mainScreen.datePicker.date // текущая дата
-        
-        //let dateFormatter = DateFormatter()
-        //dateFormatter.dateFormat = " dd "
-        
-        // let string = dateFormatter.string(from: datePickerDate)
+        print(dayString)
         let stringArray: [String] = [dayString]
         
         let newTracker = Tracker(
@@ -88,7 +77,7 @@ final class IrregularEventVC: BaseVCClass {
             name: newTrackerName,
             color: selectedColorEvent ?? constant.color,
             emoji: selectedEmojiEvent ?? constant.emojiArray.randomElement() ?? "🐶",
-            schedule: stringArray // здесь лежит одна текущая дата но нам нужна та которая в момент создания в дэйт пикер
+            schedule: stringArray
         )
         delegate?.didCreateNewTracker(newTracker)
         dismiss(animated: true)
@@ -118,3 +107,117 @@ extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 }
+
+extension IrregularEventVC: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return constant.emojiArray.count
+        case 1:
+            return Constants.colorSelection.count //18 цветов
+        default:
+            return 18
+        }
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NewTrackerCollectionViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? NewTrackerCollectionViewCell else {
+            assertionFailure("Unable to dequeue NewTrackerCollectionViewCell")
+            return UICollectionViewCell()
+        }
+        
+        switch indexPath.section {
+        case 0:
+            cell.setEmoji(constant.emojiArray[indexPath.row])
+           
+        default:
+            if let color = Constants.colorSelection[indexPath.row] {
+                cell.setColor(color)
+               
+            }
+        }
+        return cell
+    }    
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var id: String
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            id = NewTrackerSupplementaryView.reuseIdentifier
+        default:
+            id = ""
+        }
+        
+        guard let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: id,
+            for: indexPath
+        ) as? NewTrackerSupplementaryView else {
+            assertionFailure("Unable to dequeue NewTrackerSupplementaryView")
+            return UICollectionReusableView()
+        }
+        switch indexPath.section {
+        case 0:
+            view.setTitle("Emoji")
+        case 1:
+            view.setTitle("Цвет")
+        default:
+            view.setTitle("titli")
+        }
+        return view
+    }
+}
+
+extension IrregularEventVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        
+        return headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: collectionView.frame.width,
+                height: 34),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+}
+
+extension IrregularEventVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        collectionView.indexPathsForVisibleItems.filter({
+            $0.section == indexPath.section
+        }).forEach({
+            collectionView.deselectItem(at: $0, animated: true)
+        })
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            selectedEmoji = constant.emojiArray[indexPath.row]
+        case 1:
+            selectedColor = Constants.colorSelection[indexPath.row]
+        default:
+            break
+        }
+        textChanged()
+    }
+}
+

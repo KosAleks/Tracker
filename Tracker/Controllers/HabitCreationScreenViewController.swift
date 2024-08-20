@@ -8,25 +8,27 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 
 final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     func didSelectDays(_ days: [WeekDay: Bool]) {
-            selectedDays = days
-            tableView.reloadData()
-        }
+        selectedDays = days
+        tableView.reloadData()
+    }
     private let constants = Constants()
     private var selectedDays: [WeekDay: Bool] = [:]
+    private var selectedEmoji: String?
+    private var selectedColor: UIColor?
     
     weak var delegate: NewTrackerViewControllerDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "whiteColor")
-            createScrollView()
-            createConteinerView()
-            createNavigation()
-            navigationItem.title = "Новая привычка"
-            createEnterTrackerName()
-            enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-            setupButton(
-                createButton,
+        createScrollView()
+        createConteinerView()
+        createNavigation()
+        navigationItem.title = "Новая привычка"
+        createEnterTrackerName()
+        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
+        setupButton(
+            createButton,
             title: "Создать",
             titleColor: UIColor(named: "whiteColor") ?? .white,
             backgroundColor: UIColor(named: "darkGrey"),
@@ -34,10 +36,10 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             isEnabled: false,
             isCancelButton: false
         )
-            createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
+        createButton.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         
-            setupButton(
-                cancelButton,
+        setupButton(
+            cancelButton,
             title: "Отменить",
             titleColor: UIColor(named: "coralColor") ?? .red,
             backgroundColor: UIColor(named: "whiteColor"),
@@ -45,15 +47,21 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             isEnabled: true,
             isCancelButton: true
         )
-            cancelButton.addTarget(self, action: #selector(switchToMainScreen), for: .touchUpInside)
-       
-            createTableView()
-            tableView.register(CustomCellHabit.self, forCellReuseIdentifier: CustomCellHabit.identifier)
-            tableView.delegate = self
-            tableView.dataSource = self
-            hideKeyboardWhenTappedAround() 
+        cancelButton.addTarget(self, action: #selector(switchToMainScreen), for: .touchUpInside)
+        createTableView()
+        tableView.register(CustomCellHabit.self, forCellReuseIdentifier: CustomCellHabit.identifier)
+        tableView.delegate = self
+        tableView.dataSource = self
+        hideKeyboardWhenTappedAround()
+        setupCollectionViewForHabitVC()
+        setupButtonStack()
+        collectionViewForHabitVC.dataSource = self
+        collectionViewForHabitVC.delegate = self
     }
-   
+    
+    // MARK: Methods for setupUI
+     
+
     //MARK: Methods
     
     private func switchToScheduleCreator() {
@@ -95,7 +103,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         self.delegate?.didCreateNewTracker(newTracker)
         switchToMainScreen()
     }
-    }
+}
 
 //MARK: Extensions
 
@@ -134,16 +142,135 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-
-            func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-                switch indexPath.row {
-                case 0:
-                    let categoryVC = CategoryViewController()
-                    navigationController?.pushViewController(categoryVC, animated: true)
-                case 1:
-                    switchToScheduleCreator()
-                default:
-                    break
-                }
-            }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
+        case 0:
+            let categoryVC = CategoryViewController()
+            navigationController?.pushViewController(categoryVC, animated: true)
+        case 1:
+            switchToScheduleCreator()
+        default:
+            break
+        }
+    }
 }
+
+extension HabitCreationScreenVC: UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return constants.emojiArray.count
+        case 1:
+            return Constants.colorSelection.count //18 цветов
+        default:
+            return 18
+        }
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: NewTrackerCollectionViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? NewTrackerCollectionViewCell else {
+            assertionFailure("Unable to dequeue NewTrackerCollectionViewCell")
+            return UICollectionViewCell()
+        }
+        
+        switch indexPath.section {
+        case 0:
+            cell.setEmoji(constants.emojiArray[indexPath.row])
+           
+        default:
+            if let color = Constants.colorSelection[indexPath.row] {
+                cell.setColor(color)
+               
+            }
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        var id: String
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            id = NewTrackerSupplementaryView.reuseIdentifier
+        default:
+            id = ""
+        }
+        
+        guard let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: id,
+            for: indexPath
+        ) as? NewTrackerSupplementaryView else {
+            assertionFailure("Unable to dequeue NewTrackerSupplementaryView")
+            return UICollectionReusableView()
+        }
+        switch indexPath.section {
+        case 0:
+            view.setTitle("Emoji")
+        case 1:
+            view.setTitle("Цвет")
+        default:
+            view.setTitle("titli")
+        }
+        return view
+    }
+}
+
+extension HabitCreationScreenVC: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
+        
+        return headerView.systemLayoutSizeFitting(
+            CGSize(
+                width: collectionView.frame.width,
+                height: 34),
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top:0, left: 0, bottom: 34, right: 0)
+    }
+}
+
+extension HabitCreationScreenVC: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
+        collectionView.indexPathsForVisibleItems.filter({
+            $0.section == indexPath.section
+        }).forEach({
+            collectionView.deselectItem(at: $0, animated: true)
+        })
+        return true
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            selectedEmoji = constants.emojiArray[indexPath.row]
+        case 1:
+            selectedColor = Constants.colorSelection[indexPath.row]
+        default:
+            break
+        }
+        textChanged()
+    }
+}
+    
+

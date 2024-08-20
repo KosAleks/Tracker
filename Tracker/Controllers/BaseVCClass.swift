@@ -13,10 +13,37 @@ class BaseVCClass: UIViewController {
     let enterTrackerName = UITextField()
     let tableView = UITableView()
     let containerView = UIView()
+    private let buttonStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .horizontal
+        stack.spacing = 8
+        stack.distribution = .fillEqually
+        stack.alignment = .fill
+        return stack
+    }()
     let cancelButton = UIButton()
     let createButton = UIButton()
     var trackerName = String()
     let scrollView = UIScrollView()
+    let collectionViewForHabitVC: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewFlowLayout()
+            )
+        collectionView.register(
+            NewTrackerCollectionViewCell.self,
+            forCellWithReuseIdentifier: NewTrackerCollectionViewCell.reuseIdentifier
+        )
+        collectionView.register(
+            NewTrackerSupplementaryView.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: NewTrackerSupplementaryView.reuseIdentifier
+        )
+        collectionView.backgroundColor = .clear
+        collectionView.isScrollEnabled = false
+        collectionView.allowsMultipleSelection = true
+        return collectionView
+    }()
     
     //MARK: Methods for setup UI
     
@@ -33,6 +60,18 @@ class BaseVCClass: UIViewController {
         ])
     }
     
+    func setupCollectionViewForHabitVC() {
+        containerView.addSubview(collectionViewForHabitVC)
+        collectionViewForHabitVC.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionViewForHabitVC.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -16),
+            collectionViewForHabitVC.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            collectionViewForHabitVC.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            collectionViewForHabitVC.heightAnchor.constraint(equalToConstant: 476)
+            ])
+    
+    }
+    
     func createConteinerView() {
         containerView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(containerView)
@@ -42,7 +81,7 @@ class BaseVCClass: UIViewController {
             containerView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
             containerView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            containerView.heightAnchor.constraint(greaterThanOrEqualTo: scrollView.heightAnchor)
+            containerView.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
         ])
     }
     
@@ -82,7 +121,8 @@ class BaseVCClass: UIViewController {
                      backgroundColor: UIColor?,
                      borderColor: UIColor?,
                      isEnabled: Bool,
-                     isCancelButton: Bool) {
+                     isCancelButton: Bool
+    ) {
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.setTitle(title, for: .normal)
         button.setTitleColor(titleColor, for: .normal)
@@ -93,19 +133,17 @@ class BaseVCClass: UIViewController {
             button.layer.borderWidth = 1
         }
         button.translatesAutoresizingMaskIntoConstraints = false
-        containerView.addSubview(button)
-        var constraints = [
-            button.widthAnchor.constraint(equalToConstant: 166),
-            button.heightAnchor.constraint(equalToConstant: 60),
-            button.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -34)
-        ]
-        if isCancelButton {
-            constraints.append(button.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20))
-        }
-        else {
-            constraints.append(button.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20))
-        }
-        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupButtonStack() {
+        buttonStackView.addArrangedSubview(cancelButton)
+        buttonStackView.addArrangedSubview(createButton)
+        buttonStackView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(buttonStackView)
+        buttonStackView.topAnchor.constraint(equalTo: collectionViewForHabitVC.bottomAnchor, constant: 16).isActive = true
+        buttonStackView.heightAnchor.constraint(equalToConstant: 60).isActive = true
+        buttonStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20).isActive = true
+        buttonStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20).isActive = true
     }
     
     //MARK: Methods

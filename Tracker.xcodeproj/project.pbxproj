@@ -14,6 +14,7 @@
 		234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 234043352C3ABABC00DCAA35 /* SceneDelegate.swift */; };
 		2340433D2C3ABABF00DCAA35 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2340433C2C3ABABF00DCAA35 /* Assets.xcassets */; };
 		234043402C3ABABF00DCAA35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340433E2C3ABABF00DCAA35 /* LaunchScreen.storyboard */; };
+		2372D4612C74F447001EB9DC /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2372D45F2C74F447001EB9DC /* Tracker.xcdatamodeld */; };
 		2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */; };
 		238AB6D92C5E12EE00765287 /* IrregularEventScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */; };
 		238AB6DB2C5E2ABF00765287 /* Week days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6DA2C5E2ABF00765287 /* Week days.swift */; };
@@ -24,6 +25,8 @@
 		23EBBD112C4D36D800C1617B /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBBD102C4D36D800C1617B /* SupplementaryView.swift */; };
 		23EBBD142C4D370900C1617B /* ExtensionTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBBD132C4D370900C1617B /* ExtensionTextField.swift */; };
 		23EBBD162C4D3B4700C1617B /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EBBD152C4D3B4700C1617B /* Constants.swift */; };
+		23EDE0DE2C6E72DD00E7F6A3 /* NewTrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDE0DD2C6E72DC00E7F6A3 /* NewTrackerCollectionViewCell.swift */; };
+		23EDE0E02C6E737100E7F6A3 /* NewTrackerSupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EDE0DF2C6E737100E7F6A3 /* NewTrackerSupplementaryView.swift */; };
 		23EE9B7D2C3FAB7100219C3A /* Tracker Struct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B7C2C3FAB7100219C3A /* Tracker Struct.swift */; };
 		23EE9B812C3FAC9D00219C3A /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B802C3FAC9D00219C3A /* TrackerCategory.swift */; };
 		23EE9B832C3FB3C400219C3A /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23EE9B822C3FB3C400219C3A /* TrackerRecord.swift */; };
@@ -45,6 +48,7 @@
 		2340433C2C3ABABF00DCAA35 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2340433F2C3ABABF00DCAA35 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		234043412C3ABABF00DCAA35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2372D4602C74F447001EB9DC /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularEventScreenViewController.swift; sourceTree = "<group>"; };
 		238AB6DA2C5E2ABF00765287 /* Week days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Week days.swift"; sourceTree = "<group>"; };
@@ -55,6 +59,8 @@
 		23EBBD102C4D36D800C1617B /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
 		23EBBD132C4D370900C1617B /* ExtensionTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionTextField.swift; sourceTree = "<group>"; };
 		23EBBD152C4D3B4700C1617B /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		23EDE0DD2C6E72DC00E7F6A3 /* NewTrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerCollectionViewCell.swift; sourceTree = "<group>"; };
+		23EDE0DF2C6E737100E7F6A3 /* NewTrackerSupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTrackerSupplementaryView.swift; sourceTree = "<group>"; };
 		23EE9B7C2C3FAB7100219C3A /* Tracker Struct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tracker Struct.swift"; sourceTree = "<group>"; };
 		23EE9B802C3FAC9D00219C3A /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		23EE9B822C3FB3C400219C3A /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -104,6 +110,7 @@
 		234043322C3ABABC00DCAA35 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2372D45E2C74F427001EB9DC /* CoreData */,
 				23EDE0DB2C6D34B100E7F6A3 /* Cells */,
 				23EBBD122C4D36F700C1617B /* Helpers */,
 				23EE9B7F2C3FAB9800219C3A /* Controllers */,
@@ -116,6 +123,14 @@
 				239C6A4A2C68D6D10054F0A9 /* CategoryViewController.swift */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		2372D45E2C74F427001EB9DC /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				2372D45F2C74F447001EB9DC /* Tracker.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		238AB6DE2C5E338C00765287 /* CellForSchedule */ = {
@@ -149,12 +164,22 @@
 		23EDE0DB2C6D34B100E7F6A3 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
+				23EDE0DC2C6E729F00E7F6A3 /* CellForNewTrackerCollectionView */,
 				23EE9B8C2C42C0CE00219C3A /* CellsForTableViews */,
 				23EBBD0D2C4D369D00C1617B /* CellForCollectionView */,
 				238AB6DE2C5E338C00765287 /* CellForSchedule */,
 				231F82CA2C6906AF007ADD5E /* CellForIrregularTableView */,
 			);
 			path = Cells;
+			sourceTree = "<group>";
+		};
+		23EDE0DC2C6E729F00E7F6A3 /* CellForNewTrackerCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				23EDE0DD2C6E72DC00E7F6A3 /* NewTrackerCollectionViewCell.swift */,
+				23EDE0DF2C6E737100E7F6A3 /* NewTrackerSupplementaryView.swift */,
+			);
+			path = CellForNewTrackerCollectionView;
 			sourceTree = "<group>";
 		};
 		23EE9B7E2C3FAB7400219C3A /* Model's */ = {
@@ -268,6 +293,7 @@
 				23EE9B872C40630200219C3A /* HabitCreationScreenViewController.swift in Sources */,
 				23A04D242C6BC96300B84CF1 /* BaseVCClass.swift in Sources */,
 				23EBBD0F2C4D36BA00C1617B /* CollectionCellTracker.swift in Sources */,
+				23EDE0E02C6E737100E7F6A3 /* NewTrackerSupplementaryView.swift in Sources */,
 				23EBBD112C4D36D800C1617B /* SupplementaryView.swift in Sources */,
 				23EE9B852C40399B00219C3A /* ChoiceViewController.swift in Sources */,
 				2331299A2C3B6AA000823183 /* MainScreen.swift in Sources */,
@@ -280,6 +306,8 @@
 				23F872D62C6D2904003D4138 /* HideKeyBoard.swift in Sources */,
 				231F82CC2C690702007ADD5E /* CustomCellForIrregularEvent.swift in Sources */,
 				234043342C3ABABC00DCAA35 /* AppDelegate.swift in Sources */,
+				2372D4612C74F447001EB9DC /* Tracker.xcdatamodeld in Sources */,
+				23EDE0DE2C6E72DD00E7F6A3 /* NewTrackerCollectionViewCell.swift in Sources */,
 				239C6A4B2C68D6D10054F0A9 /* CategoryViewController.swift in Sources */,
 				234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */,
 				23EBBD142C4D370900C1617B /* ExtensionTextField.swift in Sources */,
@@ -500,6 +528,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		2372D45F2C74F447001EB9DC /* Tracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2372D4602C74F447001EB9DC /* Tracker.xcdatamodel */,
+			);
+			currentVersion = 2372D4602C74F447001EB9DC /* Tracker.xcdatamodel */;
+			path = Tracker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 234043282C3ABABC00DCAA35 /* Project object */;
 }
