@@ -59,11 +59,23 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         createLineView()
         syncData()
         updateUI()
-        hideKeyboardWhenTappedAround() 
+        hideKeyboardWhenTappedAround()
+       // deleteAllTrackers()
     }
     
     //MARK: Methods for setup UI
     
+    private func deleteAllTrackers() {
+           do {
+               try trackerStore.deleteAllTrackers()  // Удаляем все трекеры из хранилища
+               categories.removeAll()  // Очищаем локальный массив категорий
+               visibleCategories.removeAll()  // Очищаем отображаемые категории
+               collectionView.reloadData()  // Перезагружаем коллекцию
+               updateUI()  // Обновляем UI
+           } catch {
+               print("Ошибка при удалении всех трекеров: \(error)")
+           }
+       }
     private func createCollectionView() {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         self.view.addSubview(collectionView)
