@@ -9,6 +9,10 @@ import Foundation
 import UIKit
 
 final class MainScreen: UIViewController, UISearchBarDelegate {
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private let trackerStore = TrackerStore()
+    private let trackerRecordStore = TrackerRecordStore()
+    private var trackers = [Tracker]()
     private var starImage = UIImageView()
     private let whatWillTrack = UILabel()
     
@@ -53,6 +57,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         createLabel()
         createCollectionView()
         createLineView()
+        syncData()
         updateUI()
         hideKeyboardWhenTappedAround() 
     }
@@ -145,14 +150,30 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     }
     
     func addTracker(_ tracker: Tracker, to categoryIndex: Int) {
-        if categoryIndex < categories.count {
-            categories[categoryIndex].arrayTrackers.append(tracker)
-        } else {
-            let newCategory = TrackerCategory(title: "Новая категория", arrayTrackers: [tracker])
-            categories.append(newCategory)
+        do {
+            var categoryTitle = "Новая категория"
+            if categoryIndex < categories.count {
+                categories[categoryIndex].arrayTrackers.append(tracker)
+            } else {
+                let newCategory = TrackerCategory(
+                    title: categoryTitle,
+                    arrayTrackers: [tracker])
+                categories.append(newCategory)
+            }
+            visibleCategories = categories
+            
+            if try trackerCategoryStore.fetchCategories().filter({$0.title == categoryTitle}).count == 0 {
+                let newCategoryCoreData = TrackerCategory(title: categoryTitle, arrayTrackers: [])
+                try trackerCategoryStore.addNewCategory(newCategoryCoreData)
+            }
+            
+            createCategoryAndTracker(tracker: tracker, with: categoryTitle)
+            fetchCategory()
+            collectionView.reloadData()
+            updateUI()
+        } catch {
+            print("Error: \(error)")
         }
-        visibleCategories = categories
-        updateUI()
     }
     
     private func switchToChoiceVC () {
@@ -192,6 +213,19 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         currentDate = sender.date
         filteredTrackers()
+        updateUI()
+    }
+    
+    private func syncData() {
+        trackerCategoryStore.delegate = self
+        trackerStore.delegate = self
+        fetchCategory()
+        fetchRecord()
+        if !categories.isEmpty {
+            visibleCategories = categories
+            collectionView.reloadData()
+        }
+        
         updateUI()
     }
 }
@@ -317,15 +351,18 @@ extension MainScreen: TrackerCollectionCellDelegate {
         if currentDate <= Date() {
             let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
             completedTrackers.insert(trackerRecord)
+            createRecord(record: trackerRecord)
             collectionView.reloadItems(at: [indexPath])
         }
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        completedTrackers = completedTrackers.filter { trackerRecord in
-            !isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        if let trackerRecordToDelete = completedTrackers.first(where: { $0.id == id }) {
+            completedTrackers.remove(trackerRecordToDelete)
+            deleteRecord(record: trackerRecordToDelete)
+            
+            collectionView.reloadItems(at: [indexPath])
         }
-        collectionView.reloadItems(at: [indexPath])
     }
 }
 
@@ -341,6 +378,74 @@ extension MainScreen: NewTrackerViewControllerDelegate {
         addTracker(tracker, to: 0)
     }
 }
+
+extension MainScreen: TrackerCategoryStoreDelegate {
+    func didUpdateCategories() {
+        collectionView.reloadData()
+    }
+}
+
+extension MainScreen {
+    private func fetchCategory() {
+        do {
+            let coreDataCategories = try trackerCategoryStore.fetchCategories()
+            categories = coreDataCategories.compactMap { coreDataCategory in
+                trackerCategoryStore.updateTrackerCategory(coreDataCategory)
+            }
+
+            var trackers = [Tracker]()
+            
+            for visibleCategory in visibleCategories {
+                for tracker in visibleCategory.arrayTrackers {
+                    let newTracker = Tracker(
+                        id: tracker.id,
+                        name: tracker.name,
+                        color: tracker.color,
+                        emoji: tracker.emoji,
+                        schedule: tracker.schedule)
+                    trackers.append(newTracker)
+                }
+            }
+            
+            self.trackers = trackers
+        } catch {
+            print("Error fetching categories: \(error)")
+        }
+    }
+    
+    private func createCategoryAndTracker(tracker: Tracker, with titleCategory: String) {
+        trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: titleCategory)
+    }
+}
+
+extension MainScreen {
+    private func fetchRecord()  {
+        do {
+            completedTrackers = try trackerRecordStore.fetchRecords()
+        } catch {
+            print("Ошибка при добавлении записи: \(error)")
+        }
+    }
+    
+    private func createRecord(record: TrackerRecord)  {
+        do {
+            try trackerRecordStore.addNewRecord(from: record)
+            fetchRecord()
+        } catch {
+            print("Ошибка при добавлении записи: \(error)")
+        }
+    }
+    
+    private func deleteRecord(record: TrackerRecord)  {
+        do {
+            try trackerRecordStore.deleteTrackerRecord(trackerRecord: record)
+            fetchRecord()
+        } catch {
+            print("Ошибка при удалении записи: \(error)")
+        }
+    }
+}
+
 
 
 
