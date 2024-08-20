@@ -60,8 +60,14 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     }
     
     // MARK: Methods for setupUI
-     
-
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let bottomInset = view.safeAreaInsets.bottom + 60 // 60 - высота кнопки
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.scrollIndicatorInsets.bottom = bottomInset
+    }
+    
     //MARK: Methods
     
     private func switchToScheduleCreator() {
@@ -132,13 +138,13 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
             if selectedDaysArray.isEmpty {
                 cell.setDescription("")
             } else if selectedDaysArray.count == WeekDay.allCases.count {
-                cell.setDescription("Каждый день") // Отображаем "Каждый день", если выбраны все дни
+                cell.setDescription("Каждый день")
             } else {
                 let selectedDaysString = selectedDaysArray.map { $0.stringValue }.joined(separator: ", ")
-                cell.setDescription(selectedDaysString) //отображаем выбранные дни
+                cell.setDescription(selectedDaysString)
             }
         } else {
-            cell.setDescription("") // Очищаем описание для других ячеек
+            cell.setDescription("")
         }
         return cell
     }
@@ -184,11 +190,11 @@ extension HabitCreationScreenVC: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             cell.setEmoji(constants.emojiArray[indexPath.row])
-           
+            
         default:
             if let color = Constants.colorSelection[indexPath.row] {
                 cell.setColor(color)
-               
+                
             }
         }
         return cell
@@ -272,5 +278,5 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
         textChanged()
     }
 }
-    
+
 

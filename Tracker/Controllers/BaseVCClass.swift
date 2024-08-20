@@ -29,7 +29,7 @@ class BaseVCClass: UIViewController {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
-            )
+        )
         collectionView.register(
             NewTrackerCollectionViewCell.self,
             forCellWithReuseIdentifier: NewTrackerCollectionViewCell.reuseIdentifier
@@ -68,8 +68,8 @@ class BaseVCClass: UIViewController {
             collectionViewForHabitVC.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             collectionViewForHabitVC.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             collectionViewForHabitVC.heightAnchor.constraint(equalToConstant: 476)
-            ])
-    
+        ])
+        
     }
     
     func createConteinerView() {

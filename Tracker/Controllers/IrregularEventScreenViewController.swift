@@ -55,6 +55,13 @@ final class IrregularEventVC: BaseVCClass {
         hideKeyboardWhenTappedAround() 
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let bottomInset = view.safeAreaInsets.bottom + 60 // 60 - высота кнопки
+        scrollView.contentInset.bottom = bottomInset
+        scrollView.scrollIndicatorInsets.bottom = bottomInset
+    }
+    
     //MARK: @objc methods
     
     @objc func cancelButtonForIrregularEventTapped() {
@@ -132,11 +139,11 @@ extension IrregularEventVC: UICollectionViewDataSource {
         switch indexPath.section {
         case 0:
             cell.setEmoji(constant.emojiArray[indexPath.row])
-           
+            
         default:
             if let color = Constants.colorSelection[indexPath.row] {
                 cell.setColor(color)
-               
+                
             }
         }
         return cell
