@@ -9,8 +9,6 @@ import Foundation
 import UIKit
 
 final class IrregularEventVC: BaseVCClass {
-    private var selectedColorEvent: UIColor?
-    private var selectedEmojiEvent: String?
     private let constant = Constants()
     weak var delegate: NewTrackerViewControllerDelegate?
     private var selectedColor: UIColor?
@@ -69,15 +67,13 @@ final class IrregularEventVC: BaseVCClass {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd"
         let dayString = dateFormatter.string(from: date)
-        print(dayString)
-        let stringArray: [String] = [dayString]
         
         let newTracker = Tracker(
             id: UUID(),
             name: newTrackerName,
-            color: selectedColorEvent ?? constant.color,
-            emoji: selectedEmojiEvent ?? constant.emojiArray.randomElement() ?? "🐶",
-            schedule: stringArray
+            color: selectedColor ?? constant.color,
+            emoji: selectedEmoji ?? constant.emojiArray.randomElement() ?? "🐶",
+            schedule: dayString
         )
         delegate?.didCreateNewTracker(newTracker)
         dismiss(animated: true)

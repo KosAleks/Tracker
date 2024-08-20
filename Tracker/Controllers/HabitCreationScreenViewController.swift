@@ -91,13 +91,13 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         } else {
             newTrackerSchedule = [date]
         }
-        
+        let formattedSchedule = newTrackerSchedule.joined(separator: ", ")
         let newTracker = Tracker(
             id: UUID(),
             name: newTrackerName,
-            color: constants.color,
-            emoji: constants.emojiArray.randomElement() ?? "🐶",
-            schedule: newTrackerSchedule
+            color: selectedColor ?? .blue,
+            emoji: selectedEmoji ?? constants.emojiArray.randomElement() ?? "🐶",
+            schedule: formattedSchedule
         )
         
         self.delegate?.didCreateNewTracker(newTracker)
