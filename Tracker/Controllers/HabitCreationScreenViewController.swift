@@ -48,7 +48,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             isCancelButton: true
         )
         cancelButton.addTarget(self, action: #selector(switchToMainScreen), for: .touchUpInside)
-        createTableView()
+        createTableViewForHabit()
         tableView.register(CustomCellHabit.self, forCellReuseIdentifier: CustomCellHabit.identifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -63,7 +63,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        let bottomInset = view.safeAreaInsets.bottom + 60 // 60 - высота кнопки
+        let bottomInset = view.safeAreaInsets.bottom + 114
         scrollView.contentInset.bottom = bottomInset
         scrollView.scrollIndicatorInsets.bottom = bottomInset
     }

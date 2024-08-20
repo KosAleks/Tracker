@@ -64,7 +64,7 @@ class BaseVCClass: UIViewController {
         containerView.addSubview(collectionViewForHabitVC)
         collectionViewForHabitVC.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            collectionViewForHabitVC.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: -16),
+            collectionViewForHabitVC.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 50),
             collectionViewForHabitVC.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
             collectionViewForHabitVC.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             collectionViewForHabitVC.heightAnchor.constraint(equalToConstant: 476)
@@ -104,7 +104,7 @@ class BaseVCClass: UIViewController {
         ])
     }
     
-    func createTableView() {
+    func createTableViewForHabit() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         containerView.addSubview(tableView)
         NSLayoutConstraint.activate([
@@ -112,6 +112,17 @@ class BaseVCClass: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
             tableView.topAnchor.constraint(equalTo: enterTrackerName.bottomAnchor, constant: 24),
             tableView.heightAnchor.constraint(equalToConstant: 150)
+        ])
+    }
+    
+    func createTableViewForIrregularEvent() {
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        containerView.addSubview(tableView)
+        NSLayoutConstraint.activate([
+            tableView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 20),
+            tableView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
+            tableView.topAnchor.constraint(equalTo: enterTrackerName.bottomAnchor, constant: 24),
+            tableView.heightAnchor.constraint(equalToConstant: 75)
         ])
     }
     

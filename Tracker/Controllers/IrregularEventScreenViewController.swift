@@ -21,7 +21,7 @@ final class IrregularEventVC: BaseVCClass {
         createConteinerView()
         createEnterTrackerName()
         enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-        createTableView()
+        createTableViewForIrregularEvent()
         setupCollectionViewForHabitVC()
         collectionViewForHabitVC.dataSource = self
         collectionViewForHabitVC.delegate = self
@@ -57,7 +57,7 @@ final class IrregularEventVC: BaseVCClass {
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        let bottomInset = view.safeAreaInsets.bottom + 60 // 60 - высота кнопки
+        let bottomInset = view.safeAreaInsets.bottom + 34
         scrollView.contentInset.bottom = bottomInset
         scrollView.scrollIndicatorInsets.bottom = bottomInset
     }
@@ -172,7 +172,7 @@ extension IrregularEventVC: UICollectionViewDataSource {
         case 1:
             view.setTitle("Цвет")
         default:
-            view.setTitle("titli")
+            view.setTitle("title")
         }
         return view
     }
@@ -191,6 +191,11 @@ extension IrregularEventVC: UICollectionViewDelegateFlowLayout {
             verticalFittingPriority: .fittingSizeLevel
         )
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 34, right: 0)
+    }
+
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 52, height: 52)
