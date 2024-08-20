@@ -31,7 +31,7 @@ final class TrackerCategoryStore: NSObject {
             preconditionFailure("Failed to initialize TrackerCategoryStore: \(error)")
         }
     }
-
+    
     init(context: NSManagedObjectContext) throws {
         self.context = context
         super.init()
@@ -50,7 +50,7 @@ final class TrackerCategoryStore: NSObject {
         self.fetchedResultsController = controller
         try controller.performFetch()
     }
-
+    
     func addNewCategory( _ categoryName: TrackerCategory) throws {
         guard let trackerCategoryCoreData = NSEntityDescription.entity(forEntityName: "TrackerCategoryCoreData", in: context) else { return }
         let newCategory = TrackerCategoryCoreData(entity: trackerCategoryCoreData, insertInto: context)

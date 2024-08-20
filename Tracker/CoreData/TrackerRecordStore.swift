@@ -88,7 +88,7 @@ final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
             throw StoreError.decodeError
         }
     }
-  
+    
     func fetchRecords() throws -> Set<TrackerRecord> {
         let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         do {

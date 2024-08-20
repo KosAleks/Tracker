@@ -106,21 +106,21 @@ final class TrackerStore: NSObject {
     }
     
     func deleteAllTrackers() throws {
-          let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TrackerCoreData.fetchRequest()
-          let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
-
-          do {
-              try context.execute(deleteRequest)
-              try context.save()
-              
-              // Если вы используете NSFetchedResultsController для управления трекерами
-              try fetchedResultsController?.performFetch()
-              delegate?.didUpdateCategories()
-              
-          } catch {
-              throw StoreError.decodeError
-          }
-      }
+        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TrackerCoreData.fetchRequest()
+        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        
+        do {
+            try context.execute(deleteRequest)
+            try context.save()
+            
+            // Если вы используете NSFetchedResultsController для управления трекерами
+            try fetchedResultsController?.performFetch()
+            delegate?.didUpdateCategories()
+            
+        } catch {
+            throw StoreError.decodeError
+        }
+    }
 }
 
 extension TrackerStore: NSFetchedResultsControllerDelegate {
