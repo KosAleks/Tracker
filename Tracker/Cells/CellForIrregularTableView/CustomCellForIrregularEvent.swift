@@ -53,8 +53,10 @@ final class CustomCellForIrregularEvent: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
+        roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: 16)
         backgroundColor = UIColor(named: "greyColor")
         accessoryType = .disclosureIndicator
+        separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         contentView.addSubview(stackView)
         
         NSLayoutConstraint.activate([

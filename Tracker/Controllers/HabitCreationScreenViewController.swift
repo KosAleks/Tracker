@@ -26,7 +26,6 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         createNavigation()
         navigationItem.title = "Новая привычка"
         createEnterTrackerName()
-        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         setupButton(
             createButton,
             title: "Создать",
@@ -75,7 +74,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         scheduleCreator.delegate = self
         scheduleCreator.selectedDays = selectedDays
         scheduleCreator.onDoneButtonPressed = {
-            [weak self] in self?.createButtonChanged()
+            [weak self] in self?.colorEmojiChanged()
         }
         navigationController?.pushViewController(scheduleCreator, animated: true)
     }
@@ -275,7 +274,16 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
         default:
             break
         }
-        textChanged()
+        colorEmojiChanged()
+    }
+    
+    private func colorEmojiChanged() {
+        if self.selectedColor != nil &&
+           self.selectedEmoji?.isEmpty == false {
+            textChanged()
+        } else {
+            createButton.isEnabled = false
+        }
     }
 }
 

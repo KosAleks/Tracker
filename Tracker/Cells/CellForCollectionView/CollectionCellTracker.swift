@@ -43,7 +43,7 @@ final class CollectionCellTracker: UICollectionViewCell {
     //MARK: Methods for setup UI
     
     private func createLabel() {
-        label.font = UIFont(name: "SFPro-Medium", size: 12)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .white
         label.numberOfLines = 2 //текст может занимать до 2х строк
         label.lineBreakMode = .byWordWrapping

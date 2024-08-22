@@ -20,7 +20,6 @@ final class IrregularEventVC: BaseVCClass {
         createScrollView()
         createConteinerView()
         createEnterTrackerName()
-        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         createTableViewForIrregularEvent()
         setupCollectionViewForHabitVC()
         collectionViewForHabitVC.dataSource = self
@@ -101,10 +100,6 @@ extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForIrregularEvent.identifier, for: indexPath) as! CustomCellForIrregularEvent
         cell.textLabel?.text = "Категория"
-        cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: 16)
-        cell.backgroundColor = UIColor(named: "greyColor")
-        cell.accessoryType = .disclosureIndicator
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude) //убираем нижнюю черту
         cell.layoutMargins = UIEdgeInsets.zero
         // cell.setDescription("") раскомментить и добавить что дб в detailTextLabel
         return cell
@@ -225,7 +220,16 @@ extension IrregularEventVC: UICollectionViewDelegate {
         default:
             break
         }
-        textChanged()
+        colorEmojiChanged()
+    }
+    
+    private func colorEmojiChanged() {
+        if self.selectedColor != nil &&
+           self.selectedEmoji?.isEmpty == false {
+            textChanged()
+        } else {
+            createButton.isEnabled = false
+        }
     }
 }
 

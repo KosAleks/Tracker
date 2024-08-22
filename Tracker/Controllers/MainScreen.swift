@@ -62,6 +62,18 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         hideKeyboardWhenTappedAround()
     }
     
+    private func deleteAllTrackers() {
+             do {
+                 try trackerStore.deleteAllTrackers()
+                 categories.removeAll()
+                 visibleCategories.removeAll()
+                 collectionView.reloadData()
+                 updateUI()
+             } catch {
+                 print("Ошибка при удалении всех трекеров: \(error)")
+             }
+         }
+    
     //MARK: Methods for setup UI
     
     private func createCollectionView() {
