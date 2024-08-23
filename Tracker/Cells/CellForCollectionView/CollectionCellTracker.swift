@@ -118,7 +118,7 @@ final class CollectionCellTracker: UICollectionViewCell {
         }
         
         quantityLabel.text = setQuantityLabelText(completedDays)
-        quantityLabel.font =  UIFont(name: "SFPro-Medium", size: 12)
+        quantityLabel.font =  UIFont.systemFont(ofSize: 12, weight: .medium)
         setupQuantityButton(with: tracker)
     }
     

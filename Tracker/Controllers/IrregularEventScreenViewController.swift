@@ -226,6 +226,7 @@ extension IrregularEventVC: UICollectionViewDelegate {
     private func colorEmojiChanged() {
         if self.selectedColor != nil &&
            self.selectedEmoji?.isEmpty == false {
+            createButton.isEnabled = false
             textChanged()
         } else {
             createButton.isEnabled = false

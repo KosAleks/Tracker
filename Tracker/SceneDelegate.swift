@@ -11,14 +11,46 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
+    private let trackerCategoryStore = TrackerCategoryStore()
 
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: windowScene)
-        window?.rootViewController = TabBarViewController()
-                   window?.makeKeyAndVisible()
+        
+        guard let scene = (scene as? UIWindowScene) else { return }
+        let window = UIWindow(windowScene: scene)
+        window.rootViewController = showOnboardingOrApp()
+        
+        self.window = window
+        window.makeKeyAndVisible()
     }
-
+        
+        private func showOnboardingOrApp() -> UIViewController {
+            let userDefaults = UserDefaults.standard
+            let hasCompletedOnboarding = userDefaults.bool(forKey: "hasCompletedOnboarding")
+            
+            if hasCompletedOnboarding {
+                return TabBarViewController()
+            } else {
+                let onboardingVC = OnboardingViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
+                onboardingVC.onEnterButtonTapped = {
+                    self.completeOnboarding()
+                }
+                return onboardingVC
+            }
+        }
+//            } else {
+//                return OnboardingViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
+//            }
+        
+        
+        private func completeOnboarding() {
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(true, forKey: "hasCompletedOnboarding")
+            
+            window?.rootViewController = TabBarViewController()
+        }
+    
+    
     func sceneDidDisconnect(_ scene: UIScene) {
         // Called as the scene is being released by the system.
         // This occurs shortly after the scene enters the background, or when its session is discarded.
@@ -45,7 +77,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
-     //   (UIApplication.shared.delegate as? AppDelegate)?.saveContext()
     }
 
 

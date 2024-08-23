@@ -16,6 +16,7 @@
 		234043402C3ABABF00DCAA35 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2340433E2C3ABABF00DCAA35 /* LaunchScreen.storyboard */; };
 		2372D4612C74F447001EB9DC /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2372D45F2C74F447001EB9DC /* Tracker.xcdatamodeld */; };
 		2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */; };
+		238250312C77E7B9003A44AA /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238250302C77E7B9003A44AA /* OnboardingViewController.swift */; };
 		238AB6D92C5E12EE00765287 /* IrregularEventScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */; };
 		238AB6DB2C5E2ABF00765287 /* Week days.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6DA2C5E2ABF00765287 /* Week days.swift */; };
 		238AB6DD2C5E337400765287 /* ScheduleCellTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238AB6DC2C5E337400765287 /* ScheduleCellTracker.swift */; };
@@ -54,6 +55,7 @@
 		234043412C3ABABF00DCAA35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2372D4602C74F447001EB9DC /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
+		238250302C77E7B9003A44AA /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		238AB6D82C5E12EE00765287 /* IrregularEventScreenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IrregularEventScreenViewController.swift; sourceTree = "<group>"; };
 		238AB6DA2C5E2ABF00765287 /* Week days.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Week days.swift"; sourceTree = "<group>"; };
 		238AB6DC2C5E337400765287 /* ScheduleCellTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCellTracker.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 		234043322C3ABABC00DCAA35 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				2382502F2C77E786003A44AA /* Onboarding */,
 				2372D45E2C74F427001EB9DC /* CoreData */,
 				23EDE0DB2C6D34B100E7F6A3 /* Cells */,
 				23EBBD122C4D36F700C1617B /* Helpers */,
@@ -143,6 +146,14 @@
 				23E45C5D2C750B31001D4F87 /* UIColorMarshalling.swift */,
 			);
 			path = CoreData;
+			sourceTree = "<group>";
+		};
+		2382502F2C77E786003A44AA /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				238250302C77E7B9003A44AA /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		238AB6DE2C5E338C00765287 /* CellForSchedule */ = {
@@ -325,6 +336,7 @@
 				23EDE0DE2C6E72DD00E7F6A3 /* NewTrackerCollectionViewCell.swift in Sources */,
 				239C6A4B2C68D6D10054F0A9 /* CategoryViewController.swift in Sources */,
 				23E45C5C2C75068D001D4F87 /* TrackerRecordStore.swift in Sources */,
+				238250312C77E7B9003A44AA /* OnboardingViewController.swift in Sources */,
 				234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */,
 				23EBBD142C4D370900C1617B /* ExtensionTextField.swift in Sources */,
 				238AB6DD2C5E337400765287 /* ScheduleCellTracker.swift in Sources */,

@@ -123,7 +123,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         whatWillTrack.contentMode = .scaleAspectFit
         whatWillTrack.translatesAutoresizingMaskIntoConstraints = false
         whatWillTrack.text = "Что будем отслеживать?"
-        whatWillTrack.font = UIFont(name: "SFPro-Medium", size: 12)
+        whatWillTrack.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         whatWillTrack.textColor = UIColor(named: "blackColor")
         self.view.addSubview(whatWillTrack)
         
@@ -199,6 +199,8 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     private func updateUI() {
         if visibleCategories.isEmpty {
             collectionView.isHidden = true
+            starImage.isHidden = false
+            whatWillTrack.isHidden = false
         } else {
             starImage.isHidden = true
             whatWillTrack.isHidden = true
@@ -260,7 +262,7 @@ extension MainScreen: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CollectionCellTracker.reuseIdentifier, for: indexPath) as? CollectionCellTracker else {
-            assertionFailure("Something goinng wronng with custom cell creation.")
+            assertionFailure("Something goinng wrong with custom cell creation.")
             return UICollectionViewCell()
         }
         let tracker = visibleCategories[indexPath.section].arrayTrackers[indexPath.row]
