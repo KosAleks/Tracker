@@ -38,9 +38,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 return onboardingVC
             }
         }
-//            } else {
-//                return OnboardingViewController(transitionStyle: .pageCurl, navigationOrientation: .horizontal)
-//            }
         
         
         private func completeOnboarding() {

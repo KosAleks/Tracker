@@ -11,10 +11,26 @@ final class OnboardingViewController: UIPageViewController {
     var onEnterButtonTapped: (() -> Void)?
     lazy var pages: [UIViewController] = {
         return
-        [ PageViewController(imageName: "background1", labelText: "Отслеживайте только то, что хотите", buttonText: "Вот это технологии!"),
-          PageViewController(imageName: "background2", labelText: "Даже если это не литры воды и йога", buttonText: "Вот это технологии!")
+        [PageViewController(imageName: "background1", labelText: "Отслеживайте только то, что хотите"),
+          PageViewController(imageName: "background2", labelText: "Даже если это не литры воды и йога")
         ]
     }()
+    
+    private lazy var onEnterButton: UIButton = {
+        let button = UIButton()
+        button.isHidden = false
+        button.isEnabled = true
+        button.backgroundColor = UIColor(named: "blackColor")
+        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = UIColor(named:"blackColor")
+        button.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
+        return button
+    }()
+    
     
     lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
@@ -23,6 +39,7 @@ final class OnboardingViewController: UIPageViewController {
         pageControl.currentPageIndicatorTintColor = .black
         pageControl.pageIndicatorTintColor = .black.withAlphaComponent(0.3)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.addTarget(self, action: #selector(pageControllTapped(_:)), for: .valueChanged)
         return pageControl
     }()
     
@@ -38,10 +55,25 @@ final class OnboardingViewController: UIPageViewController {
     
     private func setupUI() {
         view.addSubview(pageControl)
+        view.addSubview(onEnterButton)
         NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -168),
+            onEnterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            onEnterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            onEnterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            onEnterButton.heightAnchor.constraint(equalToConstant: 60),
+            
+            pageControl.bottomAnchor.constraint(equalTo: onEnterButton.topAnchor, constant: 24),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+    }
+    
+    @objc func pageControllTapped(_ sender: UIPageControl) {
+        let currentIndex = pageControl.currentPage
+        setViewControllers([pages[currentIndex]], direction: .forward, animated: true)
+    }
+    
+    @objc func enterButtonTapped() {
+       onEnterButtonTapped?()
     }
 }
 

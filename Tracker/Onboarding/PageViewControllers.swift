@@ -10,7 +10,6 @@ import UIKit
 final class PageViewController: UIViewController {
     private let imageName: String
     private let labelText: String
-    private let buttonText: String
     
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -33,25 +32,10 @@ final class PageViewController: UIViewController {
         return label
     }()
     
-    private lazy var onEnterButton: UIButton = {
-        let button = UIButton()
-        button.isHidden = false
-        button.isEnabled = true
-        button.backgroundColor = UIColor(named: "blackColor")
-        button.setTitle(buttonText, for: .normal)
-        button.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor(named:"blackColor")
-        button.addTarget(self, action: #selector(onEnterButtonTapped), for: .touchUpInside)
-        return button
-    }()
     
-    init(imageName: String, labelText: String, buttonText: String) {
+    init(imageName: String, labelText: String) {
         self.imageName = imageName
         self.labelText = labelText
-        self.buttonText = buttonText
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -65,7 +49,7 @@ final class PageViewController: UIViewController {
     }
     
     private func setupUI() {
-        [imageView, label, onEnterButton].forEach {
+        [imageView, label].forEach {
             view.addSubview($0)
         }
         NSLayoutConstraint.activate([
@@ -75,16 +59,9 @@ final class PageViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -320),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
-            
-            onEnterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            onEnterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            onEnterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            onEnterButton.heightAnchor.constraint(equalToConstant: 60)
+            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
         ])
     }
     
-    @objc func onEnterButtonTapped() {
-        
-    }
+    
 }
