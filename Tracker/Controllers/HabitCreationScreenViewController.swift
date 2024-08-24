@@ -26,6 +26,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         createNavigation()
         navigationItem.title = "Новая привычка"
         createEnterTrackerName()
+        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         setupButton(
             createButton,
             title: "Создать",
@@ -74,7 +75,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         scheduleCreator.delegate = self
         scheduleCreator.selectedDays = selectedDays
         scheduleCreator.onDoneButtonPressed = {
-            [weak self] in self?.colorEmojiChanged()
+            [weak self] in self?.elemetsOfTrackerChanged()
         }
         navigationController?.pushViewController(scheduleCreator, animated: true)
     }
@@ -88,9 +89,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     @objc func createButtonTapped() {
         guard let newTrackerName = enterTrackerName.text else { return }
         guard let date = self.delegate?.setDateForNewTracker() else { return }
-        
         var newTrackerSchedule: [String] = []
-        
         if selectedDays.values.contains(true) {
             newTrackerSchedule = selectedDays.filter { $0.value }.map { $0.key.stringValue }
         } else {
@@ -104,9 +103,14 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             emoji: selectedEmoji ?? constants.emojiArray.randomElement() ?? "🐶",
             schedule: formattedSchedule
         )
-        
-        self.delegate?.didCreateNewTracker(newTracker)
-        switchToMainScreen()
+        let isChanged = elemetsOfTrackerChanged()
+        if isChanged == true {
+            self.delegate?.didCreateNewTracker(newTracker)
+            switchToMainScreen()
+        }
+        else {
+            createButton.isEnabled = false
+        }
     }
 }
 
@@ -269,21 +273,35 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             selectedEmoji = constants.emojiArray[indexPath.row]
+            elemetsOfTrackerChanged()
         case 1:
             selectedColor = Constants.colorSelection[indexPath.row]
+            elemetsOfTrackerChanged()
         default:
             break
         }
-        colorEmojiChanged()
     }
     
-    private func colorEmojiChanged() {
-        if self.selectedColor != nil &&
-           self.selectedEmoji?.isEmpty == false {
-            createButton.isEnabled = false
-            textChanged()
+    @objc func textChanged() {
+        self.trackerName = enterTrackerName.text ?? ""
+        if trackerName.isEmpty == false {
+            elemetsOfTrackerChanged()
         } else {
             createButton.isEnabled = false
+        }
+    }
+    
+    private func elemetsOfTrackerChanged() -> Bool {
+        self.trackerName = enterTrackerName.text ?? ""
+        if  self.trackerName.isEmpty == false &&
+                self.selectedColor != nil &&
+                self.selectedEmoji?.isEmpty == false &&
+                self.selectedDays.contains(where: { $0.value == true }) {
+            createButtonChanged()
+            return true
+        } else {
+            createButton.isEnabled = false
+            return false
         }
     }
 }

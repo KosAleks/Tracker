@@ -20,6 +20,7 @@ final class IrregularEventVC: BaseVCClass {
         createScrollView()
         createConteinerView()
         createEnterTrackerName()
+        enterTrackerName.addTarget(self, action: #selector(textChanged), for: .editingChanged)
         createTableViewForIrregularEvent()
         setupCollectionViewForHabitVC()
         collectionViewForHabitVC.dataSource = self
@@ -81,8 +82,15 @@ final class IrregularEventVC: BaseVCClass {
             emoji: selectedEmoji ?? constant.emojiArray.randomElement() ?? "🐶",
             schedule: dayString
         )
-        delegate?.didCreateNewTracker(newTracker)
-        dismiss(animated: true)
+        let isChanged = elemetsOfTrackerChanged()
+        if isChanged == true {
+            self.delegate?.didCreateNewTracker(newTracker)
+            dismiss(animated: true)
+        }
+        else {
+            createButton.isEnabled = false
+        }
+       
     }
 }
 
@@ -215,21 +223,34 @@ extension IrregularEventVC: UICollectionViewDelegate {
         switch indexPath.section {
         case 0:
             selectedEmoji = constant.emojiArray[indexPath.row]
+            elemetsOfTrackerChanged()
         case 1:
             selectedColor = Constants.colorSelection[indexPath.row]
+            elemetsOfTrackerChanged()
         default:
             break
         }
-        colorEmojiChanged()
     }
     
-    private func colorEmojiChanged() {
-        if self.selectedColor != nil &&
-           self.selectedEmoji?.isEmpty == false {
-            createButton.isEnabled = false
-            textChanged()
+    @objc func textChanged() {
+        self.trackerName = enterTrackerName.text ?? ""
+        if trackerName.isEmpty == false {
+            elemetsOfTrackerChanged()
         } else {
             createButton.isEnabled = false
+        }
+    }
+    
+    private func elemetsOfTrackerChanged() -> Bool {
+        self.trackerName = enterTrackerName.text ?? ""
+        if  self.trackerName.isEmpty == false &&
+                self.selectedColor != nil &&
+                self.selectedEmoji?.isEmpty == false {
+            createButtonChanged()
+            return true
+        } else {
+            createButton.isEnabled = false
+            return false
         }
     }
 }

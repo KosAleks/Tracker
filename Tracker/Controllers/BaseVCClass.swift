@@ -171,12 +171,5 @@ class BaseVCClass: UIViewController {
     
     //MARK: @objc methods
     
-    func textChanged() {
-        trackerName = enterTrackerName.text ?? ""
-        if trackerName.isEmpty {
-            createButton.isEnabled = false
-        } else {
-            createButtonChanged()
-        }
-    }
+   
 }
