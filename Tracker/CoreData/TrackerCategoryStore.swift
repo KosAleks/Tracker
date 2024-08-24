@@ -111,7 +111,7 @@ final class TrackerCategoryStore: NSObject {
         }
     }
     
-    private func category(with categoryName: String) -> TrackerCategoryCoreData? {
+    func category(with categoryName: String) -> TrackerCategoryCoreData? {
         return try? fetchCategories().filter({$0.title == categoryName}).first ?? nil
     }
     
