@@ -60,6 +60,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
+        deleteAllTrackers() 
     }
     
     private func deleteAllTrackers() {
