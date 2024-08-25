@@ -187,6 +187,13 @@ extension CategoryViewController: UITableViewDelegate {
     }
 }
 
+extension HabitCreationScreenVC: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+}
+
 extension CategoryViewController: NewCategoryViewControllerDelegate {
     func didAddNewCategory(_ category: TrackerCategory) {
         viewModel.addCategory(category)

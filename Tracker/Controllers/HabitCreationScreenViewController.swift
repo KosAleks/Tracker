@@ -7,15 +7,25 @@ protocol NewTrackerViewControllerDelegate: AnyObject {
 }
 
 final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
+   
     func didSelectDays(_ days: [WeekDay: Bool]) {
         selectedDays = days
         tableView.reloadData()
     }
+    private let trackerType: TrackerType = .habit
     private let constants = Constants()
     private var selectedDays: [WeekDay: Bool] = [:]
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
-    
+    private var categoryName: String = "" {
+        didSet {
+            if !categoryName.isEmpty {
+                print(categoryName)
+                tableView.reloadData()
+            }
+        }
+    }
+    private var schedule: [String] = []
     weak var delegate: NewTrackerViewControllerDelegate?
     
     override func viewDidLoad() {
@@ -58,6 +68,8 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         collectionViewForHabitVC.dataSource = self
         collectionViewForHabitVC.delegate = self
     }
+    
+    
     
     // MARK: Methods for setupUI
     
@@ -155,10 +167,17 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch indexPath.row {
         case 0:
-            let categoryVC = CategoryViewController()
+            let trackerCategoryStore = TrackerCategoryStore()
+            let categoryViewModel = CategoryViewModel(trackerCategoryStore: trackerCategoryStore)
+            let categoryVC = CategoryViewController(viewModel: categoryViewModel)
+            categoryVC.selectedCategory = categoryName
+            categoryVC.delegate = self
             navigationController?.pushViewController(categoryVC, animated: true)
         case 1:
-            switchToScheduleCreator()
+            let scheduleVC = ScheduleCreatorVC()
+            scheduleVC.selectedDays = selectedDays
+            scheduleVC.delegate = self
+            navigationController?.pushViewController(scheduleVC, animated: true)
         default:
             break
         }
@@ -226,7 +245,7 @@ extension HabitCreationScreenVC: UICollectionViewDataSource {
         case 1:
             view.setTitle("Цвет")
         default:
-            view.setTitle("titli")
+            view.setTitle("title")
         }
         return view
     }
@@ -303,6 +322,13 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
             createButton.isEnabled = false
             return false
         }
+    }
+}
+
+extension HabitCreationScreenVC: CategoryViewControllerDelegate {
+    func didSelectCategory(_ category: String) {
+        categoryName = category
+        tableView.reloadData()
     }
 }
 
