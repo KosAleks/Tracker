@@ -19,6 +19,7 @@
 		2342AEBB2C7A870D00280F55 /* NewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342AEBA2C7A870D00280F55 /* NewCategoryViewController.swift */; };
 		2342AEBD2C7A873400280F55 /* CategoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342AEBC2C7A873400280F55 /* CategoryViewModel.swift */; };
 		2342AEBF2C7A875400280F55 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342AEBE2C7A875400280F55 /* Binding.swift */; };
+		2342AEC12C7B87F800280F55 /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2342AEC02C7B87F800280F55 /* TrackerType.swift */; };
 		2372D4612C74F447001EB9DC /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2372D45F2C74F447001EB9DC /* Tracker.xcdatamodeld */; };
 		2381F8762C63DDD500DA3D52 /* PaddedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */; };
 		238250312C77E7B9003A44AA /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238250302C77E7B9003A44AA /* OnboardingViewController.swift */; };
@@ -63,6 +64,7 @@
 		2342AEBA2C7A870D00280F55 /* NewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewCategoryViewController.swift; sourceTree = "<group>"; };
 		2342AEBC2C7A873400280F55 /* CategoryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewModel.swift; sourceTree = "<group>"; };
 		2342AEBE2C7A875400280F55 /* Binding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binding.swift; sourceTree = "<group>"; };
+		2342AEC02C7B87F800280F55 /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		2372D4602C74F447001EB9DC /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		2381F8752C63DDD500DA3D52 /* PaddedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedTextField.swift; sourceTree = "<group>"; };
 		238250302C77E7B9003A44AA /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +237,7 @@
 				23EE9B802C3FAC9D00219C3A /* TrackerCategory.swift */,
 				23EE9B822C3FB3C400219C3A /* TrackerRecord.swift */,
 				238AB6DA2C5E2ABF00765287 /* Week days.swift */,
+				2342AEC02C7B87F800280F55 /* TrackerType.swift */,
 			);
 			path = "Model's";
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				2342AEBF2C7A875400280F55 /* Binding.swift in Sources */,
 				23EDE0DE2C6E72DD00E7F6A3 /* NewTrackerCollectionViewCell.swift in Sources */,
 				23E45C5C2C75068D001D4F87 /* TrackerRecordStore.swift in Sources */,
+				2342AEC12C7B87F800280F55 /* TrackerType.swift in Sources */,
 				238250312C77E7B9003A44AA /* OnboardingViewController.swift in Sources */,
 				234043362C3ABABC00DCAA35 /* SceneDelegate.swift in Sources */,
 				23EBBD142C4D370900C1617B /* ExtensionTextField.swift in Sources */,

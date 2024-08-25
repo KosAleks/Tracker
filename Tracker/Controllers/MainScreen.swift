@@ -60,6 +60,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
+        deleteAllTrackers()
     }
     
     private func deleteAllTrackers() {
@@ -67,6 +68,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
                  try trackerStore.deleteAllTrackers()
                  categories.removeAll()
                  visibleCategories.removeAll()
+                 trackers.removeAll()
                  collectionView.reloadData()
                  updateUI()
              } catch {
