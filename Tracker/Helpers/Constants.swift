@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 final class Constants {
-    let emojiArray = [
+    static let emojiArray = [
         "🏝️", "🥰", "🤩", "🥳", "✈️", "💯",
         "😈", "😻", "❤️", "👀", "💃", "👨‍👩‍👧‍👦",
         "🐶", "🪴", "🍎", "🥑", "🍷", "🛼"
@@ -21,3 +21,8 @@ final class Constants {
     static let colorSelection = (1...18).map({ UIColor(named: String($0)) })
 }
 
+extension Constants {
+    static func randomEmoji() -> String {
+        return emojiArray.randomElement() ?? "🦖"
+    }
+}

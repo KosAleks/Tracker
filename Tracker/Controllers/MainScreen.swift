@@ -64,11 +64,13 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     }
     
     private func deleteAllTrackers() {
+        guard let categoryToDelete = trackerCategoryStore.category(with: "D") else {
+            print("Category not found")
+            return
+        }
              do {
                  try trackerStore.deleteAllTrackers()
-                 categories.removeAll()
-                 visibleCategories.removeAll()
-                 trackers.removeAll()
+                 try trackerCategoryStore.deleteCategory(categoryToDelete)
                  collectionView.reloadData()
                  updateUI()
              } catch {
@@ -163,33 +165,41 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         collectionView.reloadData()
     }
     
-    func addTracker(_ tracker: Tracker, to categoryIndex: Int) {
+    func addTracker(_ tracker: Tracker, to category: TrackerCategory) {
         do {
-            var categoryTitle = "Новая категория"
-            if categoryIndex < categories.count {
-                categories[categoryIndex].arrayTrackers.append(tracker)
+            // Проверка наличия категории в массиве
+            if let existingCategoryIndex = categories.firstIndex(where: { $0.title == category.title }) {
+                // Обновление существующей категории
+                categories[existingCategoryIndex].arrayTrackers.append(tracker)
             } else {
-                let newCategory = TrackerCategory(
-                    title: categoryTitle,
-                    arrayTrackers: [tracker])
+                // Создание новой категории
+                let newCategory = TrackerCategory(title: category.title, arrayTrackers: [tracker])
                 categories.append(newCategory)
             }
             visibleCategories = categories
-            
-            if try trackerCategoryStore.fetchCategories().filter({$0.title == categoryTitle}).count == 0 {
-                let newCategoryCoreData = TrackerCategory(title: categoryTitle, arrayTrackers: [])
-                try trackerCategoryStore.addNewCategory(newCategoryCoreData)
+
+            // Проверка наличия категории в Core Data
+            let coreDataCategories = try trackerCategoryStore.fetchCategories()
+            let coreDataCategoryExists = coreDataCategories.contains(where: { $0.title == category.title })
+
+            if !coreDataCategoryExists {
+                let newCategoryCoreData = TrackerCategoryCoreData(context: trackerCategoryStore.context)
+                newCategoryCoreData.title = category.title
+                newCategoryCoreData.trackers = NSSet(array: [])
+                try trackerCategoryStore.context.save()
             }
-            
-            createCategoryAndTracker(tracker: tracker, with: categoryTitle)
+
+            // Создание категории и трекера в Core Data
+            createCategoryAndTracker(tracker: tracker, with: category.title)
             fetchCategory()
             collectionView.reloadData()
             updateUI()
+            
         } catch {
             print("Error: \(error)")
         }
     }
-    
+
     private func switchToChoiceVC () {
         let choiceVC = ChoiceVC()
         choiceVC.delegate = self
@@ -209,10 +219,6 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
             collectionView.isHidden = false
             collectionView.reloadData()
         }
-    }
-    
-    func didCreateNewTracker(title: String, tracker: Tracker) {
-        addTracker(tracker, to: 0)
     }
     
     private func isSameTrackerRecord(trackerRecord: TrackerRecord, id: UUID) -> Bool {
@@ -390,8 +396,8 @@ extension MainScreen: NewTrackerViewControllerDelegate {
         return dateFormatter.string(from: currentDate)
     }
     
-    func didCreateNewTracker(_ tracker: Tracker) {
-        addTracker(tracker, to: 0)
+    func didCreateNewTracker(_ tracker: Tracker, _ category: TrackerCategory) {
+        addTracker(tracker, to: category)
     }
 }
 

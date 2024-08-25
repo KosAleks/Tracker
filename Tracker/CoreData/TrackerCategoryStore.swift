@@ -17,7 +17,7 @@ final class TrackerCategoryStore: NSObject {
     public weak var delegate: TrackerCategoryStoreDelegate?
     
     private let trackerStore = TrackerStore()
-    private let context: NSManagedObjectContext
+    let context: NSManagedObjectContext
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>?
     
     convenience override init() {

@@ -112,8 +112,6 @@ final class TrackerStore: NSObject {
         do {
             try context.execute(deleteRequest)
             try context.save()
-            
-            // Если вы используете NSFetchedResultsController для управления трекерами
             try fetchedResultsController?.performFetch()
             delegate?.didUpdateCategories()
             

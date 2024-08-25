@@ -3,7 +3,7 @@ import UIKit
 
 protocol NewTrackerViewControllerDelegate: AnyObject {
     func setDateForNewTracker() -> String
-    func didCreateNewTracker(_ tracker: Tracker)
+    func didCreateNewTracker(_ tracker: Tracker, _ category: TrackerCategory)
 }
 
 final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
@@ -102,27 +102,27 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         guard let newTrackerName = enterTrackerName.text else { return }
         guard let date = self.delegate?.setDateForNewTracker() else { return }
         var newTrackerSchedule: [String] = []
-        if selectedDays.values.contains(true) {
-            newTrackerSchedule = selectedDays.filter { $0.value }.map { $0.key.stringValue }
-        } else {
+        switch trackerType {
+        case .habit:
+            if selectedDays.values.contains(true) {
+                newTrackerSchedule = selectedDays.filter { $0.value }.map { $0.key.stringValue }
+            }
+        case .event:
             newTrackerSchedule = [date]
         }
+        
         let formattedSchedule = newTrackerSchedule.joined(separator: ", ")
+        
         let newTracker = Tracker(
             id: UUID(),
             name: newTrackerName,
-            color: selectedColor ?? .blue,
-            emoji: selectedEmoji ?? constants.emojiArray.randomElement() ?? "🐶",
+            color: selectedColor ?? .orange,
+            emoji: selectedEmoji ?? Constants.randomEmoji(),
             schedule: formattedSchedule
         )
-        let isChanged = elemetsOfTrackerChanged()
-        if isChanged == true {
-            self.delegate?.didCreateNewTracker(newTracker)
-            switchToMainScreen()
-        }
-        else {
-            createButton.isEnabled = false
-        }
+        let newCategory = TrackerCategory(title: categoryName, arrayTrackers: [newTracker])
+        delegate?.didCreateNewTracker(newTracker, newCategory)
+        dismiss(animated: true)
     }
 }
 
@@ -142,7 +142,7 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.row == 0 {
             cell.textLabel?.text = "Категория"
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
-            cell.isUserInteractionEnabled = false
+            cell.isUserInteractionEnabled = true
         } else if indexPath.row == 1 {
             cell.textLabel?.text = "Расписание"
             cell.roundCorners(corners: [.layerMinXMaxYCorner, .layerMaxXMaxYCorner], radius: 16)
@@ -188,7 +188,7 @@ extension HabitCreationScreenVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return constants.emojiArray.count
+            return Constants.emojiArray.count
         case 1:
             return Constants.colorSelection.count //18 цветов
         default:
@@ -211,7 +211,7 @@ extension HabitCreationScreenVC: UICollectionViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell.setEmoji(constants.emojiArray[indexPath.row])
+            cell.setEmoji(Constants.emojiArray[indexPath.row])
             
         default:
             if let color = Constants.colorSelection[indexPath.row] {
@@ -291,7 +291,7 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            selectedEmoji = constants.emojiArray[indexPath.row]
+            selectedEmoji = Constants.emojiArray[indexPath.row]
             elemetsOfTrackerChanged()
         case 1:
             selectedColor = Constants.colorSelection[indexPath.row]

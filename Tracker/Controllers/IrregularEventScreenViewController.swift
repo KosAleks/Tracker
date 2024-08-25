@@ -13,6 +13,7 @@ final class IrregularEventVC: BaseVCClass {
     weak var delegate: NewTrackerViewControllerDelegate?
     private var selectedColor: UIColor?
     private var selectedEmoji: String?
+    private var categoryName: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -79,12 +80,13 @@ final class IrregularEventVC: BaseVCClass {
             id: UUID(),
             name: newTrackerName,
             color: selectedColor ?? constant.color,
-            emoji: selectedEmoji ?? constant.emojiArray.randomElement() ?? "🐶",
+            emoji: selectedEmoji ?? Constants.emojiArray.randomElement() ?? "🐶",
             schedule: dayString
         )
+        let newCategory = TrackerCategory(title: categoryName, arrayTrackers: [newTracker])
         let isChanged = elemetsOfTrackerChanged()
         if isChanged == true {
-            self.delegate?.didCreateNewTracker(newTracker)
+            self.delegate?.didCreateNewTracker(newTracker, newCategory)
             dismiss(animated: true)
         }
         else {
@@ -122,7 +124,7 @@ extension IrregularEventVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return constant.emojiArray.count
+            return Constants.emojiArray.count
         case 1:
             return Constants.colorSelection.count //18 цветов
         default:
@@ -141,7 +143,7 @@ extension IrregularEventVC: UICollectionViewDataSource {
         
         switch indexPath.section {
         case 0:
-            cell.setEmoji(constant.emojiArray[indexPath.row])
+            cell.setEmoji(Constants.emojiArray[indexPath.row])
             
         default:
             if let color = Constants.colorSelection[indexPath.row] {
@@ -222,7 +224,7 @@ extension IrregularEventVC: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         switch indexPath.section {
         case 0:
-            selectedEmoji = constant.emojiArray[indexPath.row]
+            selectedEmoji = Constants.emojiArray[indexPath.row]
             elemetsOfTrackerChanged()
         case 1:
             selectedColor = Constants.colorSelection[indexPath.row]
