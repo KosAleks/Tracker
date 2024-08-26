@@ -18,7 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = showOnboardingOrApp()
+        window.rootViewController =
+        showOnboardingOrApp()
         
         self.window = window
         window.makeKeyAndVisible()
@@ -26,6 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         private func showOnboardingOrApp() -> UIViewController {
             let userDefaults = UserDefaults.standard
+           // clearUserDefaults()
             let hasCompletedOnboarding = userDefaults.bool(forKey: "hasCompletedOnboarding")
             
             if hasCompletedOnboarding {
@@ -46,6 +48,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             
             window?.rootViewController = TabBarViewController()
         }
+    
+   private func clearUserDefaults() {
+        let defaults = UserDefaults.standard
+        if let bundleID = Bundle.main.bundleIdentifier {
+            defaults.removePersistentDomain(forName: bundleID)
+        }
+        defaults.synchronize()
+    }
+
     
     
     func sceneDidDisconnect(_ scene: UIScene) {

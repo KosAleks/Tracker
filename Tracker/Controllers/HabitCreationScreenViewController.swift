@@ -140,6 +140,7 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellHabit.identifier, for: indexPath) as! CustomCellHabit
         if indexPath.row == 0 {
+            cell.setDescription(categoryName)
             cell.textLabel?.text = "Категория"
             cell.roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner], radius: 16)
             cell.isUserInteractionEnabled = true

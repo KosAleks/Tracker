@@ -111,9 +111,19 @@ extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForIrregularEvent.identifier, for: indexPath) as! CustomCellForIrregularEvent
         cell.textLabel?.text = "Категория"
         cell.layoutMargins = UIEdgeInsets.zero
-        // cell.setDescription("") раскомментить и добавить что дб в detailTextLabel
+        cell.setDescription(categoryName)
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let trackerCategoryStore = TrackerCategoryStore()
+        let categoryViewModel = CategoryViewModel(trackerCategoryStore: trackerCategoryStore)
+        let categoryVC = CategoryViewController(viewModel: categoryViewModel)
+        categoryVC.selectedCategory = categoryName
+        categoryVC.delegate = self
+        navigationController?.pushViewController(categoryVC, animated: true)
+    }
+    
 }
 
 extension IrregularEventVC: UICollectionViewDataSource {
@@ -257,3 +267,9 @@ extension IrregularEventVC: UICollectionViewDelegate {
     }
 }
 
+extension IrregularEventVC: CategoryViewControllerDelegate {
+    func didSelectCategory(_ category: String) {
+        categoryName = category
+        tableView.reloadData()
+    }
+}
