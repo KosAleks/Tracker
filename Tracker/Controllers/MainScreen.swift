@@ -60,23 +60,40 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
-        deleteAllTrackers()
+        //deleteAllTrackers(for: ["Отдых"])
     }
     
-    private func deleteAllTrackers() {
-        guard let categoryToDelete = trackerCategoryStore.category(with: "D") else {
-            print("Category not found")
+    private func deleteAllTrackers(for categoryNames: [String]) {
+        let categoriesToDelete = categoryNames.compactMap { trackerCategoryStore.category(with: $0) }
+        if categoriesToDelete.isEmpty {
+            print("No categories found to delete")
             return
         }
-             do {
-                 try trackerStore.deleteAllTrackers()
-                 try trackerCategoryStore.deleteCategory(categoryToDelete)
-                 collectionView.reloadData()
-                 updateUI()
-             } catch {
-                 print("Ошибка при удалении всех трекеров: \(error)")
-             }
-         }
+        do {
+            try trackerStore.deleteAllTrackers()
+            for category in categoriesToDelete {
+                try trackerCategoryStore.deleteCategory(category)
+            }
+            collectionView.reloadData()
+            updateUI()
+        } catch {
+            print("Ошибка при удалении трекеров или категорий: \(error)")
+        }
+    }
+//    private func deleteAllTrackers() {
+//        guard let categoryToDelete = trackerCategoryStore.category(with: "D") else {
+//            print("Category not found")
+//            return
+//        }
+//             do {
+//                 try trackerStore.deleteAllTrackers()
+//                 try trackerCategoryStore.deleteCategory(categoryToDelete)
+//                 collectionView.reloadData()
+//                 updateUI()
+//             } catch {
+//                 print("Ошибка при удалении всех трекеров: \(error)")
+//             }
+//         }
     
     //MARK: Methods for setup UI
     
@@ -167,34 +184,25 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     
     func addTracker(_ tracker: Tracker, to category: TrackerCategory) {
         do {
-            // Проверка наличия категории в массиве
-            if let existingCategoryIndex = categories.firstIndex(where: { $0.title == category.title }) {
-                // Обновление существующей категории
-                categories[existingCategoryIndex].arrayTrackers.append(tracker)
+            if let categoryIndex = categories.firstIndex(where: { $0.title == category.title }) {
+                categories[categoryIndex].arrayTrackers.append(tracker)
             } else {
-                // Создание новой категории
-                let newCategory = TrackerCategory(title: category.title, arrayTrackers: [tracker])
+                let newCategory = TrackerCategory(
+                    title: category.title,
+                    arrayTrackers: [tracker])
                 categories.append(newCategory)
             }
             visibleCategories = categories
-
-            // Проверка наличия категории в Core Data
-            let coreDataCategories = try trackerCategoryStore.fetchCategories()
-            let coreDataCategoryExists = coreDataCategories.contains(where: { $0.title == category.title })
-
-            if !coreDataCategoryExists {
-                let newCategoryCoreData = TrackerCategoryCoreData(context: trackerCategoryStore.context)
-                newCategoryCoreData.title = category.title
-                newCategoryCoreData.trackers = NSSet(array: [])
-                try trackerCategoryStore.context.save()
+            
+            if try trackerCategoryStore.fetchCategories().filter({$0.title == category.title}).count == 0 {
+                let newCategoryCoreData = TrackerCategory(title: category.title, arrayTrackers: [])
+                try trackerCategoryStore.addNewCategory(newCategoryCoreData)
             }
-
-            // Создание категории и трекера в Core Data
+            
             createCategoryAndTracker(tracker: tracker, with: category.title)
             fetchCategory()
             collectionView.reloadData()
             updateUI()
-            
         } catch {
             print("Error: \(error)")
         }
