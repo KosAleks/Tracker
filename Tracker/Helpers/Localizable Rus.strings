@@ -1,0 +1,13 @@
+/* 
+  Localizable Rus.strings
+  Tracker
+
+  Created by Александра Коснырева on 27.08.2024.
+  
+*/
+"Trackers" = "Трекеры";
+"Filters" = "Фильтры";
+"Statistics" = "Статистика";
+"day" = "день";
+"days_few" = "дня";
+"days_many" = "дней";
