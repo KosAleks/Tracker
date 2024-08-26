@@ -173,6 +173,7 @@ extension HabitCreationScreenVC: UITableViewDelegate, UITableViewDataSource {
             let categoryVC = CategoryViewController(viewModel: categoryViewModel)
             categoryVC.selectedCategory = categoryName
             categoryVC.delegate = self
+            elemetsOfTrackerChanged()
             navigationController?.pushViewController(categoryVC, animated: true)
         case 1:
             let scheduleVC = ScheduleCreatorVC()
@@ -316,6 +317,7 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
         if  self.trackerName.isEmpty == false &&
                 self.selectedColor != nil &&
                 self.selectedEmoji?.isEmpty == false &&
+                self.categoryName.isEmpty == false &&
                 self.selectedDays.contains(where: { $0.value == true }) {
             createButtonChanged()
             return true

@@ -120,6 +120,7 @@ extension IrregularEventVC: UITableViewDelegate, UITableViewDataSource {
         let categoryViewModel = CategoryViewModel(trackerCategoryStore: trackerCategoryStore)
         let categoryVC = CategoryViewController(viewModel: categoryViewModel)
         categoryVC.selectedCategory = categoryName
+        elemetsOfTrackerChanged()
         categoryVC.delegate = self
         navigationController?.pushViewController(categoryVC, animated: true)
     }
@@ -257,6 +258,7 @@ extension IrregularEventVC: UICollectionViewDelegate {
         self.trackerName = enterTrackerName.text ?? ""
         if  self.trackerName.isEmpty == false &&
                 self.selectedColor != nil &&
+                self.categoryName.isEmpty == false &&
                 self.selectedEmoji?.isEmpty == false {
             createButtonChanged()
             return true

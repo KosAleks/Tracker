@@ -60,7 +60,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
-        //deleteAllTrackers(for: ["Отдых"])
+       // deleteAllTrackers(for: ["Отдых"])
     }
     
     private func deleteAllTrackers(for categoryNames: [String]) {
@@ -80,20 +80,6 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
             print("Ошибка при удалении трекеров или категорий: \(error)")
         }
     }
-//    private func deleteAllTrackers() {
-//        guard let categoryToDelete = trackerCategoryStore.category(with: "D") else {
-//            print("Category not found")
-//            return
-//        }
-//             do {
-//                 try trackerStore.deleteAllTrackers()
-//                 try trackerCategoryStore.deleteCategory(categoryToDelete)
-//                 collectionView.reloadData()
-//                 updateUI()
-//             } catch {
-//                 print("Ошибка при удалении всех трекеров: \(error)")
-//             }
-//         }
     
     //MARK: Methods for setup UI
     
