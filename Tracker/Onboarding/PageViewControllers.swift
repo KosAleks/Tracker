@@ -73,11 +73,26 @@ final class PageViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -320),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            onEnterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            onEnterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            onEnterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            onEnterButton.heightAnchor.constraint(equalToConstant: 60),
         ])
     }
     
     @objc func enterButtonTapped() {
-       onEnterButtonTapped?()
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
+            return
+        }
+        
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(true, forKey: "onboardingShow")
+        let tabBarController = TabBarViewController()
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
     }
 }
+

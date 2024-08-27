@@ -42,13 +42,10 @@ final class OnboardingViewController: UIPageViewController {
         view.addSubview(pageControl)
         view.addSubview(onEnterButton)
         NSLayoutConstraint.activate([
-            onEnterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            onEnterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            onEnterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
-            onEnterButton.heightAnchor.constraint(equalToConstant: 60),
+
             
             pageControl.bottomAnchor.constraint(equalTo: onEnterButton.topAnchor, constant: 24),
-            pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -134)
         ])
     }
     
