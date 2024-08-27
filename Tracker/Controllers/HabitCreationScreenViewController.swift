@@ -30,7 +30,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = Constants.whiteColor
         createScrollView()
         createConteinerView()
         createNavigation()
@@ -40,8 +40,8 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         setupButton(
             createButton,
             title: "Создать",
-            titleColor: UIColor(named: "whiteColor") ?? .white,
-            backgroundColor: UIColor(named: "darkGrey"),
+            titleColor: Constants.whiteColor ?? .white,
+            backgroundColor: Constants.darkGrey,
             borderColor: nil,
             isEnabled: false,
             isCancelButton: false
@@ -51,9 +51,9 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         setupButton(
             cancelButton,
             title: "Отменить",
-            titleColor: UIColor(named: "coralColor") ?? .red,
-            backgroundColor: UIColor(named: "whiteColor"),
-            borderColor: UIColor(named: "coralColor"),
+            titleColor: Constants.coralColor ?? .red,
+            backgroundColor: Constants.whiteColor,
+            borderColor: Constants.coralColor,
             isEnabled: true,
             isCancelButton: true
         )

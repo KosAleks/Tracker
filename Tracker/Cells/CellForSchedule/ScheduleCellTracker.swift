@@ -13,7 +13,7 @@ final class ScheduleCellTracker: UITableViewCell {
     let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .regular)
-        label.textColor = .black
+        label.textColor = Constants.blackColor
         return label
     }()
     
@@ -44,7 +44,7 @@ final class ScheduleCellTracker: UITableViewCell {
     
     private func setupUI() {
         selectionStyle = .none
-        backgroundColor = UIColor(named: "greyColor")
+        backgroundColor = Constants.greyColor
         
         [titleLabel, switchControll].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false

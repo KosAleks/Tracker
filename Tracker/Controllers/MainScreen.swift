@@ -39,7 +39,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     
     private let lineView: UIView = {
         let lineView = UIView()
-        lineView.backgroundColor = UIColor(named: "darkGrey")
+        lineView.backgroundColor = Constants.darkGrey
         return lineView
     }()
     
@@ -51,7 +51,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = Constants.whiteColor
         createNavigation()
         createStarImage()
         createLabel()
@@ -131,7 +131,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         whatWillTrack.translatesAutoresizingMaskIntoConstraints = false
         whatWillTrack.text = "Что будем отслеживать?"
         whatWillTrack.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        whatWillTrack.textColor = UIColor(named: "blackColor")
+        whatWillTrack.textColor = Constants.blackColor
         self.view.addSubview(whatWillTrack)
         
         whatWillTrack.topAnchor.constraint(equalTo: starImage.bottomAnchor, constant: 10).isActive = true

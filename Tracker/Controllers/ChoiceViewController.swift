@@ -17,7 +17,7 @@ final class ChoiceVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = Constants.whiteColor
         createNavigation()
         createHabitButton()
         creatEventButton()
@@ -26,10 +26,10 @@ final class ChoiceVC: UIViewController {
     //MARK: Methods for setup UI
     
     private func createHabitButton() {
-        habitButton.backgroundColor = UIColor(named: "blackColor")
+        habitButton.backgroundColor = Constants.blackColor
         habitButton.setTitle("Привычка", for: .normal)
         habitButton.titleLabel?.font =  UIFont.systemFont(ofSize: 16, weight: .medium)
-        habitButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
+        habitButton.setTitleColor(Constants.whiteColor, for: .normal)
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(habitButton)
         habitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
@@ -41,7 +41,7 @@ final class ChoiceVC: UIViewController {
     }
     
     private func creatEventButton() {
-        eventButton.backgroundColor = UIColor(named: "blackColor")
+        eventButton.backgroundColor = Constants.blackColor
         eventButton.setTitle("Нерегулярное событие", for: .normal)
         eventButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         eventButton.setTitleColor(UIColor(named: "whiteButton"), for: .normal)

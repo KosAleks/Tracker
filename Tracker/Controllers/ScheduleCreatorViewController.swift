@@ -32,7 +32,7 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
     override func viewDidLoad() {
         super.viewDidLoad()
         createNavigation()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = Constants.whiteColor
         createDoneButton()
         tableViewShedule.dataSource = self
         tableViewShedule.delegate = self
@@ -45,9 +45,9 @@ final class ScheduleCreatorVC: UIViewController, UITableViewDelegate, ScheduleVi
     //MARK: Methods for setup UI
     
     private func createDoneButton() {
-        doneButton.backgroundColor = UIColor(named: "blackColor")
+        doneButton.backgroundColor = Constants.blackColor
         doneButton.setTitle("Готово", for: .normal)
-        doneButton.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
+        doneButton.setTitleColor(Constants.whiteColor, for: .normal)
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         doneButton.layer.cornerRadius = 16
         view.addSubview(doneButton)

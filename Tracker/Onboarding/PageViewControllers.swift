@@ -25,11 +25,26 @@ final class PageViewController: UIViewController {
         let label = UILabel()
         label.text = labelText
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        label.textColor = UIColor(named: "blackColor")
+        label.textColor = Constants.blackColor
         label.textAlignment = .center
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
+    }()
+    
+    private lazy var onEnterButton: UIButton = {
+        let button = UIButton()
+        button.isHidden = false
+        button.isEnabled = true
+        button.backgroundColor = Constants.blackColor
+        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitleColor(Constants.whiteColor, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        button.layer.cornerRadius = 16
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.tintColor = Constants.blackColor
+        button.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
+        return button
     }()
     
     
@@ -49,7 +64,7 @@ final class PageViewController: UIViewController {
     }
     
     private func setupUI() {
-        [imageView, label].forEach {
+        [imageView, label, onEnterButton].forEach {
             view.addSubview($0)
         }
         NSLayoutConstraint.activate([
@@ -59,9 +74,26 @@ final class PageViewController: UIViewController {
             label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             label.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -320),
             label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16)
+            label.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            
+            onEnterButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            onEnterButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            onEnterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50),
+            onEnterButton.heightAnchor.constraint(equalToConstant: 60),
+            
         ])
     }
     
-    
+    @objc func enterButtonTapped() {
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid window configuration")
+            return
+        }
+        
+        let userDefaults = UserDefaults.standard
+        userDefaults.set(true, forKey: "onboardingShow")
+        let tabBarController = TabBarViewController()
+        window.rootViewController = tabBarController
+        window.makeKeyAndVisible()
+    }
 }

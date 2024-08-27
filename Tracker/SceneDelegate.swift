@@ -27,7 +27,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         private func showOnboardingOrApp() -> UIViewController {
             let userDefaults = UserDefaults.standard
-           // clearUserDefaults()
+            //clearUserDefaults()
             let hasCompletedOnboarding = userDefaults.bool(forKey: "hasCompletedOnboarding")
             
             if hasCompletedOnboarding {

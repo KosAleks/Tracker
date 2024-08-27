@@ -86,12 +86,12 @@ class BaseVCClass: UIViewController {
     }
     
     func createEnterTrackerName() {
-        enterTrackerName.backgroundColor = UIColor(named: "greyColor")
+        enterTrackerName.backgroundColor = Constants.greyColor
         enterTrackerName.placeholder = "Введите название трекера"
         enterTrackerName.translatesAutoresizingMaskIntoConstraints = false
         scrollView.addSubview(enterTrackerName)
         enterTrackerName.layer.cornerRadius = 16
-        enterTrackerName.textColor = UIColor(named: "blackColor")
+        enterTrackerName.textColor = Constants.blackColor
         enterTrackerName.characterLimit = 38
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: enterTrackerName.frame.height))
         enterTrackerName.leftView = leftPaddingView
@@ -165,7 +165,7 @@ class BaseVCClass: UIViewController {
     }
     
     func createButtonChanged() {
-        createButton.backgroundColor = UIColor(named: "blackColor")
+        createButton.backgroundColor = Constants.blackColor
         createButton.isEnabled = true
     }
     

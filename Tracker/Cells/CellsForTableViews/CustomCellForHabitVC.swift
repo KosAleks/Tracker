@@ -53,7 +53,7 @@ final class CustomCellHabit: UITableViewCell {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
-        backgroundColor = UIColor(named: "greyColor")
+        backgroundColor = Constants.greyColor
         accessoryType = .disclosureIndicator
         contentView.addSubview(stackView)
         
@@ -77,7 +77,7 @@ final class CustomCellHabit: UITableViewCell {
     
     func setDescription(_ model: String) {
         detailTextLabel?.text = model
-        detailTextLabel?.textColor = UIColor(named: "darkGrey")
+        detailTextLabel?.textColor = Constants.darkGrey
         detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         if detailTextLabel?.text != "" {
             detailTextLabel?.isHidden = false

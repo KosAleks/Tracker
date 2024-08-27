@@ -22,14 +22,14 @@ final class CustomCellForIrregularEvent: UITableViewCell {
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .regular)
-        label.textColor = .black
+        label.textColor = Constants.blackColor
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 17, weight: .regular)
-        label.textColor = .gray
+        label.textColor = Constants.greyColor
         label.isHidden = true
         return label
     }()
@@ -54,7 +54,7 @@ final class CustomCellForIrregularEvent: UITableViewCell {
         stackView.addArrangedSubview(titleLabel)
         stackView.addArrangedSubview(descriptionLabel)
         roundCorners(corners: [.layerMinXMinYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner], radius: 16)
-        backgroundColor = UIColor(named: "greyColor")
+        backgroundColor = Constants.greyColor
         accessoryType = .disclosureIndicator
         separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
         contentView.addSubview(stackView)
@@ -79,7 +79,7 @@ final class CustomCellForIrregularEvent: UITableViewCell {
     
     func setDescription(_ model: String) {
         detailTextLabel?.text = model
-        detailTextLabel?.textColor = UIColor(named: "darkGrey")
+        detailTextLabel?.textColor = Constants.darkGrey
         detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         if detailTextLabel?.text != "" {
             detailTextLabel?.isHidden = false

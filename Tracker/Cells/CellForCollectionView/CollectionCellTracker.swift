@@ -44,7 +44,7 @@ final class CollectionCellTracker: UICollectionViewCell {
     
     private func createLabel() {
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .white
+        label.textColor = Constants.whiteColor
         label.numberOfLines = 2 //текст может занимать до 2х строк
         label.lineBreakMode = .byWordWrapping
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -80,7 +80,7 @@ final class CollectionCellTracker: UICollectionViewCell {
     
     private func createQuantityButton() {
         quantityButton.layer.cornerRadius = 17
-        quantityButton.tintColor = .white
+        quantityButton.tintColor = Constants.whiteColor
         quantityButton.clipsToBounds = true
         quantityButton.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(quantityButton)
@@ -94,7 +94,7 @@ final class CollectionCellTracker: UICollectionViewCell {
     private func  createQuantityLabel() {
         quantityLabel.text = "1 день"
         quantityLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        quantityLabel.textColor = .black
+        quantityLabel.textColor = Constants.blackColor
         quantityLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(quantityLabel)
         quantityLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 12).isActive = true
