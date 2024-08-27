@@ -16,21 +16,6 @@ final class OnboardingViewController: UIPageViewController {
         ]
     }()
     
-    private lazy var onEnterButton: UIButton = {
-        let button = UIButton()
-        button.isHidden = false
-        button.isEnabled = true
-        button.backgroundColor = UIColor(named: "blackColor")
-        button.setTitle("Вот это технологии!", for: .normal)
-        button.setTitleColor(UIColor(named: "whiteColor"), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.layer.cornerRadius = 16
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.tintColor = UIColor(named:"blackColor")
-        button.addTarget(self, action: #selector(enterButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
     
     lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
