@@ -57,9 +57,7 @@ final class OnboardingViewController: UIPageViewController {
         setViewControllers([pages[currentIndex]], direction: .forward, animated: true)
     }
     
-    @objc func enterButtonTapped() {
-       onEnterButtonTapped?()
-    }
+   
 }
 
 extension OnboardingViewController: UIPageViewControllerDataSource {
