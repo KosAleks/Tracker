@@ -15,6 +15,7 @@ final class CategoryViewController: UIViewController {
     weak var delegate: CategoryViewControllerDelegate?
     var selectedCategory: String = ""
     private var viewModel: CategoryViewModelProtocol
+    private let colors = Colors()
     
     init(viewModel: CategoryViewModelProtocol) {
         self.viewModel = viewModel
@@ -37,6 +38,7 @@ final class CategoryViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.numberOfLines = 2
         label.textAlignment = .center
+        label.textColor = Colors.ypBlack
         return label
     }()
     
@@ -53,10 +55,10 @@ final class CategoryViewController: UIViewController {
     
     private let addCategoryButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = Colors.ypBlack
         button.layer.cornerRadius = 16
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Colors.ypWhite, for: .normal)
         button.setTitle("Добавить категорию", for: .normal)
         button.addTarget(self, action: #selector(addCategoryButtonTapped), for: .touchUpInside)
         return button
@@ -121,7 +123,8 @@ final class CategoryViewController: UIViewController {
         navigationItem.title = "Категория"
         navigationController?.isNavigationBarHidden = false
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
+
     }
     
     private func updateUI() {

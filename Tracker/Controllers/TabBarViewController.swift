@@ -17,14 +17,14 @@ final class TabBarViewController: UITabBarController {
     private func createTabBar() {
         let trackerVC = UINavigationController(rootViewController: MainScreen())
         trackerVC.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: NSLocalizedString("Trackers", comment: "Title for the main screen"),
             image: UIImage(systemName: "record.circle.fill")?.withRenderingMode(.alwaysTemplate),
             selectedImage: nil
         )
         
-        let statisticsVC = UINavigationController(rootViewController: StatisticsViewController())
+        let statisticsVC = UINavigationController(rootViewController: StatisticViewController())
         statisticsVC.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: NSLocalizedString("Statistics", comment: "Title for the statistics tab"),
             image: UIImage(systemName: "hare.fill")?.withRenderingMode(.alwaysTemplate),
             selectedImage: nil
         )

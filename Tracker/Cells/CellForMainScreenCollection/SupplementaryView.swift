@@ -36,6 +36,6 @@ final class SupplementaryView: UICollectionReusableView {
     func setTitle(title: String) {
         titleLabel.text = title
         titleLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        titleLabel.textColor = UIColor(named: "blackColor")
+        titleLabel.tintColor = .black
     }
 }

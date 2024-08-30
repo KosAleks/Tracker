@@ -14,10 +14,11 @@ final class IrregularEventVC: BaseVCClass {
     private var selectedColor: UIColor?
     private var selectedEmoji: String?
     private var categoryName: String = ""
+    private let colors = Colors()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = colors.viewBackgroundColor
         createScrollView()
         createConteinerView()
         createEnterTrackerName()
@@ -41,7 +42,7 @@ final class IrregularEventVC: BaseVCClass {
             cancelButton,
             title: "Отменить",
             titleColor: UIColor(named: "coralColor") ?? .red,
-            backgroundColor: UIColor(named: "whiteColor"),
+            backgroundColor: Colors.ypWhite,
             borderColor: UIColor(named: "coralColor"),
             isEnabled: true,
             isCancelButton: true

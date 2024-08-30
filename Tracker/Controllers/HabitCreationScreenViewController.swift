@@ -4,6 +4,7 @@ import UIKit
 protocol NewTrackerViewControllerDelegate: AnyObject {
     func setDateForNewTracker() -> String
     func didCreateNewTracker(_ tracker: Tracker, _ category: TrackerCategory)
+    func didEditTracker(_ tracker: Tracker, _ category: TrackerCategory)
 }
 
 final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
@@ -17,7 +18,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
     private var selectedDays: [WeekDay: Bool] = [:]
     private var selectedEmoji: String?
     private var selectedColor: UIColor?
-    private var categoryName: String = "" {
+    var categoryName: String = "" {
         didSet {
             if !categoryName.isEmpty {
                 print(categoryName)
@@ -25,12 +26,25 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             }
         }
     }
-    private var schedule: [String] = []
+    
+    var selectedCategory: TrackerCategory? {
+        didSet {
+            if let category = selectedCategory {
+                categoryName = category.title
+                tableView.reloadData()
+            }
+        }
+    }
+    
+    private var schedule: String = " "
     weak var delegate: NewTrackerViewControllerDelegate?
+    var isEditingTracker = false
+    private var editedTracker: Tracker?
+    private let colors = Colors()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(named: "whiteColor")
+        view.backgroundColor = colors.viewBackgroundColor
         createScrollView()
         createConteinerView()
         createNavigation()
@@ -40,7 +54,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         setupButton(
             createButton,
             title: "Создать",
-            titleColor: UIColor(named: "whiteColor") ?? .white,
+            titleColor: Colors.ypWhite ?? .white,
             backgroundColor: UIColor(named: "darkGrey"),
             borderColor: nil,
             isEnabled: false,
@@ -52,7 +66,7 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
             cancelButton,
             title: "Отменить",
             titleColor: UIColor(named: "coralColor") ?? .red,
-            backgroundColor: UIColor(named: "whiteColor"),
+            backgroundColor: Colors.ypWhite,
             borderColor: UIColor(named: "coralColor"),
             isEnabled: true,
             isCancelButton: true
@@ -123,6 +137,33 @@ final class HabitCreationScreenVC: BaseVCClass, ScheduleViewControllerDelegate {
         let newCategory = TrackerCategory(title: categoryName, arrayTrackers: [newTracker])
         delegate?.didCreateNewTracker(newTracker, newCategory)
         dismiss(animated: true)
+    }
+    
+    func setupEditTracker(tracker: Tracker) {
+        isEditingTracker = true
+        editedTracker = tracker
+        enterTrackerName.text = tracker.name
+        schedule = tracker.schedule
+        selectedEmoji = tracker.emoji
+        selectedColor = tracker.color
+        selectedDays = [:]
+        
+        let days = tracker.schedule.components(separatedBy: ", ")
+        for day in days {
+            switch day {
+            case "Пн": selectedDays[.Monday] = true
+            case "Вт": selectedDays[.Tuesday] = true
+            case "Ср": selectedDays[.Wednesday] = true
+            case "Чт": selectedDays[.Thursday] = true
+            case "Пт": selectedDays[.Friday] = true
+            case "Сб": selectedDays[.Saturday] = true
+            case "Вс": selectedDays[.Sunday] = true
+            default: break
+            }
+        }
+        tableView.reloadData()
+        collectionViewForHabitVC.reloadData()
+        elemetsOfTrackerChanged()
     }
 }
 
@@ -328,9 +369,19 @@ extension HabitCreationScreenVC: UICollectionViewDelegate {
     }
 }
 
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+
 extension HabitCreationScreenVC: CategoryViewControllerDelegate {
     func didSelectCategory(_ category: String) {
         categoryName = category
+        tableView.reloadData()
+    }
+    
+    func didSelectCategoryEditMode(_ category: TrackerCategory) {
+        selectedCategory = category
         tableView.reloadData()
     }
 }

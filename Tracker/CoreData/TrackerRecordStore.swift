@@ -8,9 +8,13 @@
 import UIKit
 import CoreData
 
+protocol TrackerRecordStoreDelegate: AnyObject {
+    func didUpdateRecords()
+}
+
 final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
     private let context: NSManagedObjectContext
-    
+    public weak var delegate: TrackerRecordStoreDelegate?
     private var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData>?
     
     convenience override init() {

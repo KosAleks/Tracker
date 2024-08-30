@@ -15,6 +15,7 @@ final class NewCategoryViewController: UIViewController {
     private var enteredCategoryName = ""
     let trackerCategoryStore = TrackerCategoryStore()
     weak var delegate: NewCategoryViewControllerDelegate?
+    private let colors = Colors()
     
     private let nameTextField: UITextField = {
         let textField = UITextField()
@@ -32,7 +33,7 @@ final class NewCategoryViewController: UIViewController {
         button.layer.cornerRadius = 16
         button.isEnabled = false
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.white, for: .normal)
+        button.setTitleColor(Colors.ypWhite, for: .normal)
         button.setTitle("Готово", for: .normal)
         button.addTarget(self, action: #selector(readyButtonTapped), for: .touchUpInside)
         return button
@@ -67,7 +68,7 @@ final class NewCategoryViewController: UIViewController {
         navigationItem.title = "Новая категория"
         navigationController?.isNavigationBarHidden = false
         navigationItem.hidesBackButton = true
-        view.backgroundColor = .white
+        view.backgroundColor = colors.viewBackgroundColor
     }
     
     private func checkReadyButtonAvailability() {
@@ -77,7 +78,7 @@ final class NewCategoryViewController: UIViewController {
             return
         }
         readyButton.isEnabled = true
-        readyButton.backgroundColor = UIColor(red: 26/255, green: 27/255, blue: 34/255, alpha: 1)
+        readyButton.backgroundColor = Colors.ypBlack
     }
     
     private func setupUI() {

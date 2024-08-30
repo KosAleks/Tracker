@@ -26,3 +26,12 @@ extension Constants {
         return emojiArray.randomElement() ?? "🦖"
     }
 }
+
+extension Constants {
+    static let blue = UIColor(named: "blueColor")
+    static let black = UIColor(named: "blackColor")
+    static let white = UIColor(named: "whiteColor")
+    static let coral = UIColor(named: "coralColor")
+    static let grey = UIColor(named: "greyColor")
+    static let darkGrey = UIColor(named: "darkGrey")
+}

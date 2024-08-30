@@ -105,18 +105,35 @@ final class TrackerStore: NSObject {
             schedule: trackersCoreData.schedule ?? "")
     }
     
-    func deleteAllTrackers() throws {
-        let fetchRequest: NSFetchRequest<NSFetchRequestResult> = TrackerCoreData.fetchRequest()
-        let deleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+    func updateTracker(_ tracker: Tracker) -> TrackerCoreData? {
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(format: "id == %@", tracker.id as CVarArg)
         
         do {
-            try context.execute(deleteRequest)
-            try context.save()
-            try fetchedResultsController?.performFetch()
-            delegate?.didUpdateCategories()
-            
+            let results = try context.fetch(fetchRequest)
+            if let trackerEntity = results.first {
+                trackerEntity.name = tracker.name
+                trackerEntity.color = uiColorMarshalling.hexString(from: tracker.color)
+                trackerEntity.emoji = tracker.emoji
+                trackerEntity.schedule = tracker.schedule
+                try context.save()
+                return trackerEntity
+            }
         } catch {
-            throw StoreError.decodeError
+            print("Error updating tracker: \(error)")
+        }
+        return nil
+    }
+    
+    func deleteTracker(tracker: Tracker) {
+        do {
+            let targetTrackers = try fetchTrackerCoreData()
+            if let index = targetTrackers.firstIndex(where: {$0.id == tracker.id}) {
+                context.delete(targetTrackers[index])
+                try context.save()
+            }
+        } catch {
+            print("Ошибка при получении трекеров: \(error)")
         }
     }
 }

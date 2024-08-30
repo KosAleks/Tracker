@@ -6,3 +6,15 @@
 //
 
 import Foundation
+import UIKit
+
+final class Colors {
+    let viewBackgroundColor = UIColor.systemBackground
+    static let ypBlack = UIColor(named: "ypBlack")!
+        static let ypWhite = UIColor(named: "ypWhite")!
+        
+    var navigationBarTintColor: UIColor = UIColor { (traits) -> UIColor in
+        let isDarkMode = traits.userInterfaceStyle == .dark
+        return isDarkMode ? Colors.ypWhite : Colors.ypBlack
+    }
+}
