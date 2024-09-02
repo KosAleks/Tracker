@@ -91,7 +91,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
-        deleteAllTrackers(for: ["O"])
+        deleteAllTrackers(for: ["отдых"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
