@@ -10,7 +10,7 @@ import XCTest
 import SnapshotTesting
 @testable import Tracker
 
-final class TrackerUITests: XCTestCase {
+final class TrackerSnapshotTest: XCTestCase {
     
         func testViewController() throws {
           

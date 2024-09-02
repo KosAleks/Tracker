@@ -337,11 +337,6 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     }
 }
 
-//MARK: Settings UINavigationController
-
-let mainVC = MainScreen()
-let navigationController = UINavigationController(rootViewController: mainVC)
-
 //MARK: Extensions
 
 extension MainScreen: UICollectionViewDataSource {
@@ -572,7 +567,7 @@ extension MainScreen: TrackerCollectionCellDelegate {
         }
     }
 }
-    
+
 
 
 extension MainScreen: NewTrackerViewControllerDelegate {
@@ -590,7 +585,7 @@ extension MainScreen: NewTrackerViewControllerDelegate {
     func didEditTracker(_ tracker: Tracker, _ newCategory: TrackerCategory) {
         var oldCategoryIndex: Int?
         var oldTrackerIndex: Int?
-
+        
         for (categoryIndex, category) in visibleCategories.enumerated() {
             if let trackerIndex = category.arrayTrackers.firstIndex(where: { $0.id == tracker.id }) {
                 oldCategoryIndex = categoryIndex
@@ -598,27 +593,27 @@ extension MainScreen: NewTrackerViewControllerDelegate {
                 break
             }
         }
-
+        
         if let oldCategoryIndex = oldCategoryIndex, let oldTrackerIndex = oldTrackerIndex {
             visibleCategories[oldCategoryIndex].arrayTrackers.remove(at: oldTrackerIndex)
-
+            
             if visibleCategories[oldCategoryIndex].arrayTrackers.isEmpty {
                 visibleCategories.remove(at: oldCategoryIndex)
             }
         }
-
+        
         if let newCategoryIndex = visibleCategories.firstIndex(where: { $0.title == newCategory.title }) {
             visibleCategories[newCategoryIndex].arrayTrackers.append(tracker)
         } else {
             visibleCategories.append(newCategory)
         }
-
+        
         if let updatedTrackerCoreData = trackerStore.updateTracker(tracker) {
             if let oldCategoryIndex = oldCategoryIndex {
                 let oldCategoryTitle = visibleCategories[oldCategoryIndex].title
                 try? trackerCategoryStore.deleteTrackerFromCategory(tracker: tracker, from: oldCategoryTitle)
             }
-
+            
             try? trackerCategoryStore.addNewTrackerToCategory(tracker, to: newCategory.title)
         }
         
@@ -632,8 +627,8 @@ extension MainScreen: TrackerCategoryStoreDelegate {
     }
 }
 
-extension MainScreen {
-    private func fetchCategory() {
+private extension MainScreen {
+    func fetchCategory() {
         do {
             let coreDataCategories = try trackerCategoryStore.fetchCategories()
             categories = coreDataCategories.compactMap { coreDataCategory in
@@ -660,13 +655,13 @@ extension MainScreen {
         }
     }
     
-    private func createCategoryAndTracker(tracker: Tracker, with titleCategory: String) {
+    func createCategoryAndTracker(tracker: Tracker, with titleCategory: String) {
         trackerCategoryStore.createCategoryAndTracker(tracker: tracker, with: titleCategory)
     }
 }
 
-extension MainScreen {
-    private func fetchRecord()  {
+private extension MainScreen {
+    func fetchRecord()  {
         do {
             completedTrackers = try trackerRecordStore.fetchRecords()
         } catch {
@@ -674,7 +669,7 @@ extension MainScreen {
         }
     }
     
-    private func createRecord(record: TrackerRecord)  {
+    func createRecord(record: TrackerRecord)  {
         do {
             try trackerRecordStore.addNewRecord(from: record)
             fetchRecord()
@@ -683,7 +678,7 @@ extension MainScreen {
         }
     }
     
-    private func deleteRecord(record: TrackerRecord)  {
+    func deleteRecord(record: TrackerRecord)  {
         do {
             try trackerRecordStore.deleteTrackerRecord(trackerRecord: record)
             fetchRecord()
@@ -693,8 +688,8 @@ extension MainScreen {
     }
 }
 
-extension MainScreen {
-    private func applyFilter() {
+private extension MainScreen {
+    func applyFilter() {
         switch currentFilter {
         case .all:
             filteredTrackers()
@@ -731,26 +726,26 @@ extension MainScreen {
         }
     }
     
-    private func isTrackerCompletedOnDate(tracker: Tracker, date: Date) -> Bool {
+    func isTrackerCompletedOnDate(tracker: Tracker, date: Date) -> Bool {
         return completedTrackers.contains { record in
             record.id == tracker.id && Calendar.current.isDate(record.date, inSameDayAs: date)
         }
     }
     
-    private func isTrackerScheduledForToday(tracker: Tracker) -> Bool {
+    func isTrackerScheduledForToday(tracker: Tracker) -> Bool {
         let calendar = Calendar.current
         let today = calendar.component(.weekday, from: currentDate) - 1
         let todayString = WeekDay(rawValue: today)?.stringValue ?? ""
         return tracker.schedule.contains(todayString)
     }
     
-    private func showPlaceholder() {
+    func showPlaceholder() {
         placeholderImageFilter.isHidden = false
         placeholderLabelFilter.isHidden = false
         collectionView.isHidden = true
     }
     
-    private func hidePlaceholder() {
+    func hidePlaceholder() {
         placeholderImageFilter.isHidden = true
         placeholderLabelFilter.isHidden = true
         collectionView.isHidden = false

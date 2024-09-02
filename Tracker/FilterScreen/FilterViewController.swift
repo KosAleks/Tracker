@@ -17,7 +17,7 @@ final class FilterViewController: UIViewController {
     private let titles = ["Все трекеры", "Трекеры на сегодня", "Завершенные", "Не завершенные"]
     private var filters: [TrackerFilter] = [.all, .today, .completed, .notCompleted]
     var selectedFilter: TrackerFilter?
-    let color = Colors()
+    private let color = Colors()
     
     private let tableView: UITableView = {
         let tableView = UITableView()
