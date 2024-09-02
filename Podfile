@@ -6,6 +6,6 @@ target 'Tracker' do
   use_frameworks!
 
   # Pods for Tracker
-  
+  pod 'YandexMobileMetrica'
 
 end

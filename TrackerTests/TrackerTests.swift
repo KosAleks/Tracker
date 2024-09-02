@@ -13,8 +13,10 @@ import SnapshotTesting
 final class TrackerUITests: XCTestCase {
     
         func testViewController() throws {
-            let vc = OnboardingViewController()
+          
+            let vc = MainScreen()
             assertSnapshot(matching: vc, as: .image)
+            
         }
         
         override func setUpWithError() throws {

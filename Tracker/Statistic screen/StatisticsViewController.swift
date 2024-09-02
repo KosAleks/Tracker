@@ -20,7 +20,7 @@ final class StatisticViewController: UIViewController {
         label.text = "Анализировать пока нечего"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textAlignment = .center
-        label.textColor = Colors.ypWhite
+        label.textColor = Colors.ypBlack
         return label
     }()
     

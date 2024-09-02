@@ -19,6 +19,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     private var currentFilter: TrackerFilter = .all
     private var originalCategories: [UUID: String] = [:]
     private let colors = Colors()
+    private var filteredData: [String] = []
     
     private var collectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -37,7 +38,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     }()
     
     private let searchBar: UISearchController = {
-        let searchBar = UISearchController()
+        let searchBar = UISearchController(searchResultsController: nil)
         return searchBar
     }()
     
@@ -90,7 +91,17 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
-        deleteAllTrackers(for: ["Закрепленные"])
+        deleteAllTrackers(for: ["O"])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        analyticsService.report(event: "open", params: ["screen": "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(true)
+        analyticsService.report(event: "close", params: ["screen": "Main"])
     }
     
     private func deleteAllTrackers(for categoryNames: [String]) {
@@ -120,7 +131,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16).isActive = true
         collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16).isActive = true
         collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -tabBarController!.tabBar.frame.height/50).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: (tabBarController?.tabBar.frame.height ?? 100)/50).isActive = true
         let filterButtonHeight: CGFloat = 50
         let filterButtonBottomInset: CGFloat = 16
         let collectionViewBottomInset = filterButtonHeight + filterButtonBottomInset + 16
@@ -306,6 +317,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     //MARK: @objc methods
     
     @objc func leftButtonTapped() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
         switchToChoiceVC()
     }
     
@@ -444,6 +456,7 @@ extension MainScreen: TrackerCollectionCellDelegate {
     }
     
     func completeTracker(id: UUID, at indexPath: IndexPath) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
         if currentDate <= Date() {
             let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
             completedTrackers.insert(trackerRecord)
@@ -750,7 +763,6 @@ extension MainScreen: FilterViewControllerDelegate {
         applyFilter()
     }
 }
-
 
 
 
