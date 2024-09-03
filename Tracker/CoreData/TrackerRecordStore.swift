@@ -12,9 +12,10 @@ protocol TrackerRecordStoreDelegate: AnyObject {
     func didUpdateRecords()
 }
 
-final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
+final class TrackerRecordStore: NSObject {
     private let context: NSManagedObjectContext
     public weak var delegate: TrackerRecordStoreDelegate?
+    
     private var fetchedResultsController: NSFetchedResultsController<TrackerRecordCoreData>?
     
     convenience override init() {
@@ -63,10 +64,7 @@ final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
         else {
             throw StoreError.decodeError
         }
-        return TrackerRecord(
-            id: id,
-            date: date
-        )
+        return TrackerRecord(id: id, date: date)
     }
     
     func addNewRecord(from trackerRecord: TrackerRecord) throws {
@@ -92,7 +90,7 @@ final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
             throw StoreError.decodeError
         }
     }
-    
+  
     func fetchRecords() throws -> Set<TrackerRecord> {
         let fetchRequest = NSFetchRequest<TrackerRecordCoreData>(entityName: "TrackerRecordCoreData")
         do {
@@ -107,6 +105,12 @@ final class TrackerRecordStore: NSObject, NSFetchedResultsControllerDelegate {
         } catch {
             throw StoreError.decodeError
         }
+    }
+}
+
+extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
+    func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+        delegate?.didUpdateRecords()
     }
 }
 

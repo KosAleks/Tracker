@@ -70,13 +70,14 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         let label = UILabel()
         label.text = "Ничего не найдено"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        label.textColor = Colors.ypBlack
         return label
     }()
     
     private var categories: [TrackerCategory] = []
     var visibleCategories: [TrackerCategory] = []
     
-    private var completedTrackers: Set<TrackerRecord> = [] //Трекеры, которые были «выполнены» в выбранную дату
+    private var completedTrackers: Set<TrackerRecord> = []
     private var currentDate = Date()
     
     override func viewDidLoad() {
@@ -88,6 +89,8 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         createCollectionView()
         createLineView()
         createFilterButton()
+        createPlaceholderLabelFilter()
+        createPlaceholderImageFilter()
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
@@ -96,12 +99,12 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        analyticsService.report(event: "open", params: ["screen": "Main"])
+        analyticsService.report(event: "open", params: ["screen": "MainScreen"])
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(true)
-        analyticsService.report(event: "close", params: ["screen": "Main"])
+        analyticsService.report(event: "close", params: ["screen": "MainScreen"])
     }
     
     private func deleteAllTrackers(for categoryNames: [String]) {
@@ -200,6 +203,26 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         filterButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16).isActive = true
         filterButton.widthAnchor.constraint(equalToConstant: 115).isActive = true
         filterButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+    }
+    
+    private func  createPlaceholderImageFilter() {
+        placeholderImageFilter.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(placeholderImageFilter)
+        NSLayoutConstraint.activate([
+            placeholderImageFilter.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            placeholderImageFilter.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            placeholderImageFilter.widthAnchor.constraint(equalToConstant: 80),
+            placeholderImageFilter.heightAnchor.constraint(equalToConstant: 80)
+        ])
+    }
+    
+    private func createPlaceholderLabelFilter() {
+        placeholderLabelFilter.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(placeholderLabelFilter)
+        NSLayoutConstraint.activate([
+            placeholderLabelFilter.topAnchor.constraint(equalTo: view.topAnchor, constant: 490),
+            placeholderLabelFilter.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            ])
     }
     
     //MARK: Methods
@@ -317,18 +340,19 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
     //MARK: @objc methods
     
     @objc func leftButtonTapped() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+        analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "edit_tracker"])
         switchToChoiceVC()
     }
     
     @objc func datePickerChanged(_ sender: UIDatePicker) {
         currentDate = sender.date
         filteredTrackers()
+        applyFilter()
         updateUI()
     }
     
     @objc private func filterButtonTapped(_ sender: UIButton) {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
+        analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "filter"])
         let filterViewController = FilterViewController()
         filterViewController.delegate = self
         filterViewController.selectedFilter = currentFilter
@@ -356,6 +380,10 @@ extension MainScreen: UICollectionViewDataSource {
         let tracker = visibleCategories[indexPath.section].arrayTrackers[indexPath.row]
         _ = visibleCategories[indexPath.section].arrayTrackers[indexPath.row].id
         let isCompletedToday = isTrackerCompletedToday(id: tracker.id)
+        if isCompletedToday == true {
+            analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "edit_tracker"])
+        }
+        else {print ("Trecker is not complite")}
         let completedDays = completedTrackers.filter {
             $0.id == tracker.id
         }.count
@@ -451,7 +479,7 @@ extension MainScreen: TrackerCollectionCellDelegate {
     }
     
     func completeTracker(id: UUID, at indexPath: IndexPath) {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
+        analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "edit_tracker"])
         if currentDate <= Date() {
             let trackerRecord = TrackerRecord(id: id, date: datePicker.date)
             completedTrackers.insert(trackerRecord)
@@ -510,7 +538,7 @@ extension MainScreen: TrackerCollectionCellDelegate {
     }
     
     func editTracker(at indexPath: IndexPath) {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
+        analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "edit"])
         let vc = HabitCreationScreenVC()
         vc.delegate = self
         let tracker = self.visibleCategories[indexPath.section].arrayTrackers[indexPath.row]
@@ -523,7 +551,7 @@ extension MainScreen: TrackerCollectionCellDelegate {
     }
     
     func deleteTracker(at indexPath: IndexPath) {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
+        analyticsService.report(event: "click", params: ["screen": "MainScreen", "item": "delete"])
         let alert = UIAlertController(
             title: "",
             message: "Уверены, что хотите удалить трекер?",

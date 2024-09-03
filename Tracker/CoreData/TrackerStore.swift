@@ -3,10 +3,9 @@
 //  Tracker
 //
 //  Created by Александра Коснырева on 20.08.2024.
-//
 
-import UIKit
 import CoreData
+import UIKit
 
 enum StoreError: Error {
     case decodeError
@@ -30,7 +29,7 @@ final class TrackerStore: NSObject {
             preconditionFailure("Failed to initialize TrackerStore: \(error)")
         }
     }
-    
+
     init(context: NSManagedObjectContext) throws {
         self.context = context
         super.init()
@@ -89,7 +88,7 @@ final class TrackerStore: NSObject {
             throw StoreError.decodeError
         }
     }
-    
+ 
     func changeTrackers(from trackersCoreData: TrackerCoreData) -> Tracker? {
         guard
             let id = trackersCoreData.id,
