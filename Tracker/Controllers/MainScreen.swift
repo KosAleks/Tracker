@@ -89,12 +89,11 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         createCollectionView()
         createLineView()
         createFilterButton()
-        createPlaceholderLabelFilter()
         createPlaceholderImageFilter()
+        createPlaceholderLabelFilter()
         syncData()
         updateUI()
         hideKeyboardWhenTappedAround()
-        deleteAllTrackers(for: ["отдых"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -220,7 +219,7 @@ final class MainScreen: UIViewController, UISearchBarDelegate {
         placeholderLabelFilter.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(placeholderLabelFilter)
         NSLayoutConstraint.activate([
-            placeholderLabelFilter.topAnchor.constraint(equalTo: view.topAnchor, constant: 490),
+            placeholderLabelFilter.topAnchor.constraint(equalTo: placeholderImageFilter.bottomAnchor, constant: 10),
             placeholderLabelFilter.centerXAnchor.constraint(equalTo: view.centerXAnchor)
             ])
     }
